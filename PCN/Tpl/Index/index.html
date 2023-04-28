@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+ 
+  <title>GZ PCN Approval</title>
+
+  <!-- Bootstrap core CSS --> 
+  <link rel="stylesheet" href="__TMPL__assets/dist/css/bootstrap.min.css">
+  <!-- Custom styles for this template -->
+  <link href="__TMPL__assets/css/simple-sidebar.css" rel="stylesheet">
+  <!--link href="__TMPL__assets/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
+  <link href="__TMPL__assets/fontawesome/css/all.css" rel="stylesheet">
+  <link href="__TMPL__assets/css/pcn.css" rel="stylesheet">
+  <link href="__TMPL__bootstrap-table1.14.1.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+   <script src="__TMPL__assets/js/ie10-viewport-bug-workaround.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+  
+  <style>
+    table tbody tr td{
+        white-space:nowrap ;
+        overflow:hidden;
+    }
+	.reject{
+	   text-decoration:line-through;
+	   color:red;
+	}
+
+  </style>
+</head>
+
+<body >
+
+   <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+      <div class="bg-light border-right" id="sidebar-wrapper">
+		  <div class="sidebar-heading" style="background-image: url('__TMPL__logo.png');background-repeat: no-repeat;background-size:100% 100%;">.</div>
+		  <div class="list-group list-group-flush">
+			<a href="#" class="list-group-item list-group-item-action bg-light list-group-item-light" onclick='action_pcn("PE")'>{$Think.lang.pe_m}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("PRE")'>{$Think.lang.pre_m}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("QA")'>{$Think.lang.qa_m}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("ENGD")'>{$Think.lang.eng_d}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("MFGD")'>{$Think.lang.prod_d}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("QAD")'>{$Think.lang.qa_d}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("SPCN")'>{$Think.lang.spcn}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("CCOMP")'>{$Think.lang.ccomp}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("PEE")'>{$Think.lang.PEE}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("completion")'>{$Think.lang.completion}</a>
+			<a href="#" class="list-group-item list-group-item-action bg-light" onclick='action_pcn("Reject")'>{$Think.lang.reject}</a>
+			<a href="__APP__/Public/logout" class="list-group-item list-group-item-action bg-light" >{$Think.lang.logout}</a>
+          </div>
+     </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">      
+        <span class="navbar-toggler-icon" id="menu-toggle"></span><!--&#128263;-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="__APP__"><i class="fa fa-fw fa-home"></i>{$Think.lang.home} <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fas fa-user" style="font-size: 18px;"></i>{$userName}</a>
+            </li>
+			<!--li class="nav-item">
+              <a class="nav-link" href="__APP__?l=en-us">{$Think.lang.en-us}</a>
+            </li>
+			<li class="nav-item">
+              <a class="nav-link" href="__APP__?l=zh-cn">{$Think.lang.cn-zh}</a>
+            </li-->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-cog" style="font-size: 18px;"></i>{$Think.lang.set}
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="__APP__?l=en-us">{$Think.lang.en-us}</a>
+                <a class="dropdown-item" href="__APP__?l=zh-cn">{$Think.lang.cn-zh}</a>	
+				
+			    <if condition=" $_SESSION['admin'] eq 'admin' ">
+				    <div class="dropdown-divider"></div>  
+				    <a class="dropdown-item" href="__APP__/Admin/index">{$Think.lang.admin} </a>
+				</if>
+               </div>
+            </li>
+          </ul>
+        </div>
+
+      </nav>	
+	 
+		<!--hr style='margin-top:-3px;'-->
+			  <div class="container-fluid" style='margin-left:2px; position:relative;border-bottom: 2px solid #ff0000;'>
+			     <div id="toolbar">
+					  <div class="btn-toolbar" role="toolbar">
+							  <div class="btn-group">
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="New" onclick='add_recd()'>
+								  <i class="fa fa-plus-circle"></i>
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Edit" onclick='edit_recd()'>
+								 <i class="fa fa-edit" ></i> 
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Split Record" onclick='split_recd()'>
+								 <i class="fa fa-mars-double" ></i> 
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Copy" onclick='copy_recd()'>
+								 <i class="fa fa-copy" ></i> 
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Del" onclick='del_recd()'>
+								 <a href='#'> <i class="fa fa-trash-alt"></i></a>
+								</button>						
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Refresh" onclick="refresh_recd()">
+								 <i class="fa fa-sync-alt"></i>
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Export To Excel" onclick="export_recd()">
+								<i class="fa fa-file-excel"></i>
+								</button>
+								<button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Detail Search & Export Report" onclick="_tools()">
+								<i class="fa fa-tools"></i>
+								</button>
+							  </div>				  
+						</div>
+				 </div>
+			     <table id='tradeList' class="table" >
+                 <thead>
+					  <tr>
+						<th data-checkbox="true"></th>
+					   <th data-field="id" data-sortable="true">ID</th>
+					  </tr>
+			   </thead>
+			   </table>
+			 
+			  </div>
+		       <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                   <a href="#">Pcn Work Flow 1.00</a>
+               </div>
+				<!-- Central Modal Small -->
+				<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				  aria-hidden="true">
+			  <!-- Change class .modal-sm to change the size of the modal -->
+				  <div class="modal-dialog  modal-notify modal-info" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h6 class="modal-title w-100" id="myModalLabel"><i class="fas fa-info-circle" style="font-size: 24px;color:red;"></i>&nbsp;信息提示</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body">
+						<div class="alert alert-warning" role="alert">
+						    请勾选择一条待操作的的记录!
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-info btn-sm" data-dismiss="modal">确定</button>
+					
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<!-- Central Modal Small -->
+			
+    </div>
+    <!-- /#wrapper -->
+  				
+  <!-- Bootstrap core JavaScript -->
+  <script src="__TMPL__assets/js/jquery-3.4.1.js"></script>
+  <script src="__TMPL__assets/js/popper.min.js"></script>
+  <script src="__TMPL__assets/js/bootbox.all.js"></script>
+  <script src="__TMPL__assets/dist/js/bootstrap.min.js"></script>
+  <script src="__TMPL__bootstrap-table1.14.1.js"></script>
+  <script src="__TMPL__assets/dist/js/bootbox.all.js"></script>
+  <!-- Menu Toggle Script -->
+
+</body>
+ <script>
+     var rule ="{$rules}";
+     var TableInit = function () {
+        var oTableInit = new Object();
+        /*初始化Table $table.bootstrapTable('destroy').bootstrapTable({
+			search	true	开启搜索输入框
+			searchOnEnterKey	true	回车后执行搜索
+			strictSearch	true2019/12/23
+			完全匹配搜索，不是like模糊查询
+			trimOnSearch	true	自动去除关键词两边空格
+			searchAlign	left/right	left搜索框在左边 right在右边
+			searchTimeOut	1000	设置搜索超时时间，数据量很大时才有用
+			searchText	字符串	初始化时默认搜索的关键词
+			customSearch	自定义方法	自定义搜索*/
+        oTableInit.Init = function () {
+            $('#tradeList').bootstrapTable('destroy').bootstrapTable({
+                url: '__URL__/getData',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                paginationHAlign:"right",
+                paginationDetailHAlign:"left",
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+				contentType: "application/x-www-form-urlencoded",
+                //contentType: "application/json",
+				queryParamsType: "limit",  //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder   //设置为limit可以获取limit, offset, search, sort, order  
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                strictSearch: true,
+                clickToSelect:false,                //是否启用点击选中行
+               // height: 400,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+				search: true, 
+				searchOnEnterKey:false,
+				trimOnSearch:true,
+				//showRefresh: true, 
+				showToggle:true,
+				showColumns:true,
+				showToggle:true,
+			    showfullscreen:true, 
+				singleSelect:true,
+				//singleselect:true,
+				//checkbox: true,
+				// showExport: true, 
+				// exportDataType:$(this).val(),
+                // exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+				//showFooter:true,				
+				 // detailView:true,
+				 rowStyle: rowStyle ,
+				 classes: "table table-bordered table-hover table-sm", 
+				 //theadClasses:"thead-light",
+		    	 detailFormatter:detailFormatter,
+				//detailViewByClick:true,
+				 onDblClickRow:function(row,field){
+			     // alert('dfssdfsddfs');
+				 },
+                columns: [{
+                    title: "data-checkbox='true'"},
+				  {
+                    field: 'id',
+                    title: "{$Think.lang.id}",
+					width:'3%'
+                 }, {
+                    field: 'pcn_no',
+                    title: "{$Think.lang.pcn_no}",
+					width:'8%'
+                }, {
+                    field: 'cust_name',
+                    title: "{$Think.lang.cust_name}"
+                }, {
+                    field: 'cust_pn',
+                    title: "{$Think.lang.cust_pn}"
+                }, {
+                    field: 'initiator_dept',
+                    title: "{$Think.lang.initiator_dept}"
+                }, {
+                    field: 'internal_pn',
+                    title: "{$Think.lang.internal_pn}"
+                }/*, {
+                    field: 'before_change',
+                    title: "{$Think.lang.before_change}"
+                }, {
+                    field: 'after_change',
+                    title: "{$Think.lang.after_change}"
+                }, {
+                    field: 'reason_change',
+                    title: "{$Think.lang.reason_change}"
+                }*/, {
+                    field: 'initiation_date',
+                    title: "{$Think.lang.initiation_date}"
+                }, {
+                    field: 'curr_status',
+                    title: "{$Think.lang.curr_status}",
+					formatter : currStatus
+
+                }, {
+          field: 'operate',
+          title: 'Action',
+          align: 'center',
+          clickToSelect: false,
+          events: window.operateEvents,
+          formatter: operateFormatter
+        }
+				]
+            });
+        };
+    
+      oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                search:params.search,
+                orderid: $("#orderid").val(),
+                };
+            return temp;
+        };
+        oTableInit.detailFormatter=function (index, row, element){
+			return  index ; 
+			
+			};
+
+        return oTableInit;
+    }
+	
+		 function footerStyle(column) {
+			return {
+			  css: { 'font-weight': 'normal' },
+			  classes: 'my-class'
+			}
+		  }
+			function detailFormatter(index, row, element) { return row.title; }
+
+			function edit(id) {
+					alert("编辑：" + id);//弹出编辑窗体...用ajax...更新(略)...
+				}
+				function del(id) {
+					confirm("删除：" + id);//用ajax...删除(略)...
+				}
+		  function rowStyle(row, index) {
+			var classes = [
+			  'bg-blue',
+			  'bg-green',
+			  'bg-orange',
+			  'bg-yellow',
+			  'bg-red'
+			]
+              
+			if (row.curr_status.search('Reject')!=-1) {
+			  return {
+				 classes: 'reject'
+			  }
+			}
+			return {
+			 /* css: {
+				color: 'red' //text-decoration:line-through
+
+			  }*/
+			  // classes: 'reject'
+			}
+		  }
+
+          function operateFormatter(value, row, index) {
+			   if (row.curr_status=='PEE')
+			   {
+                   if (rule.search(row.curr_status.toLowerCase())!=-1)
+				      {
+						 return [
+						  '<a class="PEExcute" href="javascript:void(0)" title="PE Excute">',
+						  '<i class="fas fa-user-cog" style="font-size: 18px;"></i>',
+						  '</a>  ' ,
+						   '<a class="view" href="javascript:void(0)" title="View">',
+						  '<i class="fas fa-eye" style="font-size: 18px;"></i>',
+						  '</a>  ' 
+						].join('')
+				      }else{
+					     return [
+						   '<a class="view" href="javascript:void(0)" title="View">',
+						  '<i class="fas fa-eye" style="font-size: 18px;"></i>',
+						  '</a>  ' 
+						].join('')
+					   
+					  }
+
+			   }else if(row.curr_status.search('Reject')!=-1){
+			      
+				   return [
+				   '<a class="view" href="javascript:void(0)" title="View">',
+				  '<i class="fas fa-eye" style="font-size: 18px;"></i>',
+				  '</a>  ' 
+				].join('')
+			   
+			   }else{    
+				      if (rule.search(row.curr_status.toLowerCase())!=-1)
+				      {
+						  return [
+						  '<a class="approved" href="javascript:void(0)" title="Approval">',
+						  '<i class="fas fa-thumbs-up" style="font-size: 18px;"></i>',
+						  '</a>  ',
+						   '<a class="view" href="javascript:void(0)" title="View">',
+						  '<i class="fas fa-eye" style="font-size: 18px;"></i>',
+						  '</a>  ' 
+						].join('')
+				      }else{
+					     return [
+						   '<a class="view" href="javascript:void(0)" title="View">',
+						  '<i class="fas fa-eye" style="font-size: 18px;"></i>',
+						  '</a>  ' 
+						].join('')
+					   
+					  }
+						
+			  }
+            }
+			  window.operateEvents = {
+				'click .approved': function (e, value, row, index) {
+				//  alert('You click like action, row value: ' + row.curr_status);//JSON.stringify(row))
+				   location.href ="__URL__/approval/pcn_no/"+row.pcn_no;
+				},
+			  'click .view': function (e, value, row, index) {
+					//alert('ffddffd');
+				  location.href ="__URL__/view_detail/pcn_no/"+row.pcn_no;
+				  },
+			   'click .PEExcute': function (e, value, row, index) {
+					//alert('ffddffd');
+				  location.href ="__URL__/pe_exec/pcn_no/"+row.pcn_no;
+				  },
+				}
+			 function currStatus(value,row, index) {
+				/*var c = '<a class="green-color" href="#"  οnclick="info(\''
+					+ row.id
+					+ '\')">查看</a> ';
+				var e = '<a class="green-color" href="#"  οnclick="input(\''
+						+ row.id
+						+ '\')">编辑</a> ';
+				var d = '<a class="red-color" href="#"  οnclick="del(\''
+						+ row.id
+						+ '\')">删除</a> ';*/
+              switch(value) {				
+				  case 'PE':
+					cstatus='Waiting For PE Manager Approval';
+					break;
+				  case 'PRE':
+					cstatus='Waiting For PRE Manager Approval';
+					break;
+				  case 'QA':
+					cstatus='Waiting For QA Manager Approval';
+					break;
+				  case 'ENGD':
+					cstatus='Waiting For PRE Director Approval';
+					break;
+				  case 'MFGD':
+					cstatus='Waiting For MFG Director Approval';
+					break;
+				  case 'QAD':
+					cstatus='Waiting For QA Director Approval';
+					break;
+				  case 'SPCN':
+					cstatus='Waiting For Sending Customer';
+					break;
+				  case 'CCOMP':
+					cstatus='Pending Customer Replying';
+					break;
+				  case 'PEE':			
+						cstatus='Pending Executed PTL';   
+						break;
+                  case 'COMPLETION':			
+					   cstatus='Completion';      
+					   break;              
+				  default:
+				    var dept=value.split('/');
+					switch(dept[0]) {				
+						  case 'PE':
+							cstatus='PE Manager Reject';
+							break;
+						  case 'PRE':
+							cstatus='PRE Manager Reject';
+							break;
+						  case 'QA':
+							cstatus='QA Manager Reject';
+							break;
+						  case 'ENGD':
+							cstatus='PRE Director Reject';
+							break;
+						  case 'MFGD':
+							cstatus='MFG Director Reject';
+							break;
+						  case 'QAD':
+							cstatus='QA Director Reject';
+							break;
+						  case 'SPCN':
+							cstatus='Cancel Sending Customer';
+							break;
+						  case 'CCOMP':
+							cstatus='Customer Reject';
+							break;
+						  case 'PEE':
+							cstatus='PE Cancel Excuted';
+							break;  
+					}
+				}
+
+				return cstatus;
+			}
+
+ $(function(){
+   $('[data-toggle="tooltip"]').tooltip(); 
+   $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+    add_recd=function(){ location.href ="__URL__/add";}
+    edit_recd=function(){
+	    
+	     if ($('#tradeList').bootstrapTable('getSelections').length==0)
+	     {
+			// alert("请选中一条记录！");
+
+			$('.modal').modal('show');
+         }else if($('#tradeList').bootstrapTable('getSelections')[0].curr_status!='PE'){
+			  bootbox.alert("审批过的PCN不能修改!");
+	     }else{
+			
+		   var pcn_no=($('#tradeList').bootstrapTable('getSelections')[0].pcn_no);
+		   location.href ="__URL__/edit/pcn_no/"+pcn_no;
+		 }
+	   
+	   }//{ alert('getSelections: ' + JSON.stringify($('#tradeList').bootstrapTable('getSelections')))}
+	   copy_recd=function(){
+	    
+	     if ($('#tradeList').bootstrapTable('getSelections').length==0)
+	     {
+			// alert("请选中一条记录！");
+
+			$('.modal').modal('show');
+	     }else{
+		  var pcn_no=($('#tradeList').bootstrapTable('getSelections')[0].pcn_no);
+		  var curStatus=($('#tradeList').bootstrapTable('getSelections')[0].curr_status);
+		 /* if (curStatus!='PE')
+		  {
+		 	 bootbox.alert('<div class="alert alert-warning"> <i class="fas fa-info-circle" style="font-size: 24px;color:red;"></i>   审批过的PCN不能复制! </div>');			
+			 return false;
+		  }*/
+		    location.href ="__URL__/copy_rec/pcn_no/"+pcn_no;
+		 }
+	   
+	   }//{ alert('getSelecti
+	   split_recd=function(){
+	    
+	     if ($('#tradeList').bootstrapTable('getSelections').length==0)
+	     {
+			// alert("请选中一条记录！");
+
+			$('.modal').modal('show');
+	     }else{
+		  var pcn_no=($('#tradeList').bootstrapTable('getSelections')[0].pcn_no);
+		  var curStatus=($('#tradeList').bootstrapTable('getSelections')[0].curr_status);
+		    location.href ="__URL__/split_rec/pcn_no/"+pcn_no;
+		 }
+	   
+	   }//{ alert('getSelecti
+	  del_recd=function(){
+	    
+	     if ($('#tradeList').bootstrapTable('getSelections').length==0)
+	     {
+			$('.modal').modal('show');
+	     }else{
+		   var pcn_no=($('#tradeList').bootstrapTable('getSelections')[0].pcn_no);
+		   location.href ="__URL__/del/pcn_no/"+pcn_no;
+		 }
+	   
+	   }
+	  refresh_recd=function(){
+	     $('#tradeList').bootstrapTable('refreshOptions', {
+               url: '__URL__/getData'
+             })	   
+	   }
+	  export_recd=function(){
+		  if ($('#tradeList').bootstrapTable('getSelections').length==0)
+			 {
+				$('.modal').modal('show');
+			 }else{
+			   var pcn_no=($('#tradeList').bootstrapTable('getSelections')[0].pcn_no);
+			   location.href ="__URL__/export_excel/pcn_no/"+pcn_no;
+			 }
+	  	  }
+
+    _tools = function(){
+		  var dialog = bootbox.dialog({
+    title: '{$Think.lang.advace_search}',
+  /*  message:  '<div class="well" style="margin-top:10px;"><form class="form-horizontal" role="form"> '
+	          +'<div class="form-group"><label class="col-sm-3 control-label no-padding-right" for="txtOldPwd">旧密码</label>'
+	          +'<div class="col-sm-9"><input type="text" id="txtOldPwd" placeholder="请输入旧密码" class="col-xs-10 col-sm-5" />'
+	          +'</div></div><div class="space-4"></div><div class="form-group"><label class="col-sm-3 control-label no-padding-right" for="txtNewPwd1">新密码</label><div class="col-sm-9">'
+	          +'<input type="text" id="txtNewPwd1" placeholder="请输入新密码" class="col-xs-10 col-sm-5" /></div></div><div class="space-4"></div><div class="form-group">'
+	          +'<label class="col-sm-3 control-label no-padding-right" for="txtNewPwd2">确认新密码</label><div class="col-sm-9">'
+	          +'<input type="text" id="txtNewPwd2" placeholder="再次输入新密码" class="col-xs-10 col-sm-5" /></div></div></form></div>',*/
+   /* message:'<div class="row"> \
+                <div class="col">col</div> \
+                <div class="col">col</div> \
+                <div class="w-100"></div> \
+                <div class="col">col</div> \
+                 <div class="col">col</div> \
+               </div>',*/
+   message:'<form>\
+		  <div class="form-group row mb-2"> \
+             <label for="s_pcn_no" class="col-sm-2 col-form-label col-form-label-sm">{$Think.lang.pcn_no}:</label>\
+             <div class="col-sm-10">\
+                 <input type="text" class="form-control form-control-sm" id="s_pcn_no" placeholder={$Think.lang.pcn_no}>\
+             </div>\
+          </div>\
+		  <div class="form-group row mb-2"> \
+             <label for="s_cs_name" class="col-sm-2 col-form-label col-form-label-sm ">{$Think.lang.cust_name}:</label>\
+             <div class="col-sm-10">\
+                 <input type="text" class="form-control form-control-sm" id="s_cs_name" placeholder={$Think.lang.cust_name}>\
+             </div>\
+          </div>\
+		  <div class="form-group row mb-2"> \
+             <label for="s_cs_pn" class="col-sm-2 col-form-label col-form-label-sm">{$Think.lang.cust_pn}:</label>\
+             <div class="col-sm-10">\
+                 <input type="text" class="form-control form-control-sm" id="s_cs_pn" placeholder={$Think.lang.cust_pn}>\
+             </div>\
+          </div>\
+		  <div class="form-group row mb-2"> \
+             <label for="s_internal_pn" class="col-sm-2 col-form-label col-form-label-sm">{$Think.lang.internal_pn}:</label>\
+             <div class="col-sm-10">\
+                 <input type="text" class="form-control form-control-sm" id="s_internal_pn" placeholder={$Think.lang.internal_pn}>\
+             </div>\
+          </div>\
+		   <div class="form-group row mb-2"> \
+             <label for="s_internal_pn" class="col-sm-2 col-form-label col-form-label-sm">{$Think.lang.pcn_type}:</label>\
+             <div class="col-sm-10">\
+                <select id="s_pcn_type" class="form-control form-control-sm">\
+					<option selected>Choose...</option>\
+					<option>材料变更</option>\
+					<option>设备变更</option>\
+					<option>产地变更</option>\
+					<option>工艺变更</option>\
+					<option>包装变更</option>\
+					<option>测试检验方法变更</option>\
+					<option>人员变更</option>\
+					<option>设计变更</option>\
+					<option>其它变更</option>\
+				 </select>\
+             </div>\
+          </div>\
+		    <div class="form-group row ml-1">\
+				<div class="form-check form-check-inline">\
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">\
+				  <label class="form-check-label col-form-label col-form-label-sm" for="inlineRadio1">{$Think.lang.excuted_pn}</label>\
+				</div>\
+				<div class="form-check form-check-inline">\
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">\
+				  <label class="form-check-label col-form-label col-form-label-sm" for="inlineRadio2">{$Think.lang.pending_executed_pn}</label>\
+				</div>\
+				<div class="form-check form-check-inline">\
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">\
+				  <label class="form-check-label" for="inlineRadio3">{$Think.lang.pending_sending_cust}</label>\
+				</div>\
+				<div class="form-check form-check-inline">\
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">\
+				  <label class="form-check-label" for="inlineRadio3">{$Think.lang.pending_cust_reply}</label>\
+				</div>\
+				<div class="form-check form-check-inline">\
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">\
+				  <label class="form-check-label" for="inlineRadio3">{$Think.lang.pcn_list}</label>\
+				</div>\
+		  </div>\
+        </form>',
+    size: 'large',
+    buttons: {
+        cancel: {
+            label: "{$Think.lang.search}",
+            className: 'btn-info',
+            callback: function(){
+				var s_pcn_no=$('#s_pcn_no').val()==''?1:$('#s_pcn_no').val();
+				var s_cs_name=$('#s_cs_name').val()==''?1:$('#s_cs_name').val();
+				var s_cs_pn=$('#s_cs_pn').val()==''?1:$('#s_cs_pn').val();
+				var s_internal_pn=$('#s_internal_pn').val()==''?1:$('#s_internal_pn').val();
+				var s_pcn_type=$('#s_pcn_type').val()=='Choose...'?1:$('#s_pcn_type').val();
+				var cond=$('.form-check-input');
+				var scond='';
+				//var sql="pcn_no like '%"+s_pcn_no+"%' and cust_name like '%"+s_cs_name+"%' and cust_pn like '%"+s_cs_pn+"%' and internal_pn like '%"+s_internal_pn+"%' and category like '%"+s_pcn_type+"%'";
+				var sql="pcn_no/"+s_pcn_no+"/cust_name/"+s_cs_name+"/cust_pn/"+s_cs_pn+"/internal_pn/"+s_internal_pn+"/category/"+s_pcn_type+"/adv_search/1";
+				//var sql="pcn_no/"+s_pcn_no+"/adv_search/1";
+				for (var i=0; i < cond.length; i++) {
+                     if (cond[i].checked==true) {
+                        scond=cond[i].value;  
+						// alert(scond);
+                     }
+				 }
+				
+				switch(scond)
+					{
+						case 'option1':
+						  sql=sql+"/exec_status/true";
+							break;
+						case 'option2':
+							 sql=sql+"/curr_status/PEE";
+							break;
+						case 'option3':
+							 sql=sql+"/curr_status/SPCN";
+							break;
+						case 'option4':
+							 sql=sql+"/curr_status/CCOMP";
+							 break;
+						default:
+							break;
+					}
+		
+		        // alert('__URL__/getData_approval/'+sql);
+               $('#tradeList').bootstrapTable('removeAll');
+				 $('#tradeList').bootstrapTable('refreshOptions', {
+					 url: '__URL__/getData_approval/'+sql
+				 })
+				 // return false;
+            }
+        },
+        noclose: {
+            label: "{$Think.lang.export_excl}",
+            className: 'btn-info',
+            callback: function(){
+               	var s_pcn_no=$('#s_pcn_no').val()==''?1:$('#s_pcn_no').val();
+				var s_cs_name=$('#s_cs_name').val()==''?1:$('#s_cs_name').val();
+				var s_cs_pn=$('#s_cs_pn').val()==''?1:$('#s_cs_pn').val();
+				var s_internal_pn=$('#s_internal_pn').val()==''?1:$('#s_internal_pn').val();
+				var s_pcn_type=$('#s_pcn_type').val()=='Choose...'?1:$('#s_pcn_type').val();
+				var cond=$('.form-check-input');
+				var scond='';
+				var  pcnlist =false ;
+				//var sql="pcn_no like '%"+s_pcn_no+"%' and cust_name like '%"+s_cs_name+"%' and cust_pn like '%"+s_cs_pn+"%' and internal_pn like '%"+s_internal_pn+"%' and category like '%"+s_pcn_type+"%'";
+				var sql="pcn_no/"+s_pcn_no+"/cust_name/"+s_cs_name+"/cust_pn/"+s_cs_pn+"/internal_pn/"+s_internal_pn+"/category/"+s_pcn_type+"/adv_search/1";
+				//var sql="pcn_no/"+s_pcn_no+"/adv_search/1";
+				for (var i=0; i < cond.length; i++) {
+                     if (cond[i].checked==true) {
+                        scond=cond[i].value;  
+						// alert(scond);
+                     }
+				 }
+				switch(scond)
+					{
+						case 'option1':
+						  sql=sql+"/exec_status/true";
+							break;
+						case 'option2':
+							 sql=sql+"/curr_status/PEE";
+							break;
+						case 'option3':
+							 sql=sql+"/curr_status/SPCN";
+							break;
+						case 'option4':
+							 sql=sql+"/curr_status/CCOMP";
+							 break;
+					    case 'option5':
+					
+					        pcnlist=true;	
+						
+							 break;
+						default:
+						    
+							break;
+					}
+              
+					if (pcnlist==false) {
+						location.href ="__URL__/export_excel_detail/"+sql;
+				 	 //location.href ="__URL__/export_excel_pcn_list/"+sql;
+					}else{
+						location.href ="__URL__/export_excel_pcn_list/"+sql;
+					}
+			
+                return false;
+            }
+        },
+        ok: {
+            label: "{$Think.lang.close}",
+            className: 'btn-info',
+            callback: function(){
+				//return false;
+            }
+        }
+    }
+});
+	  	  }
+      action_pcn=function(pcna){
+	        if (pcna!='LOGOUT'){	
+				 $('#tradeList').bootstrapTable('removeAll');
+				 $('#tradeList').bootstrapTable('refreshOptions', {
+					  url: '__URL__/getData_approval/pcnstatus/'+pcna
+				 })
+			 }else{
+			  //alert('sdfdfsfds');
+			 
+			 }
+	 }
+   //1.初始化Table
+     var oTable = new TableInit();
+     oTable.Init();
+    //2.初始化Button的点击事件
+        /* var oButtonInit = new ButtonInit();
+        oButtonInit.Init(); */
+	});
+
+
+</script>
+
+</html>

@@ -1,0 +1,32 @@
+<?php
+	return array(
+	    'Id'  =>'序号',
+		'user_name'         =>'用户名',
+	 	'user_pwd'         =>'用户密码',
+		'role'            =>'角色',
+		'access_rule'        =>'权限',
+		'last_time'     =>'最后登入时间', 
+		'local_ip'       =>'最后登入IP',
+		'status'=>'当前状态', 	
+		'new'=>'新增',
+		'edit'=>'修改',
+		'dele'=>'删除',
+		'pe'=>'PE经理审批',
+		'pre'=>'PRE经理审批',
+		'qa'=>'QA经理审批',
+		'engd'=>'工程总监审批',
+		'mfgd'=>'生产总监审批',
+		'qad'=>'QA总监审批',
+		'spcn'=>'待发给客户的PCN',
+		'ccomp'=>'待客户回复',
+		'pee'=>'执行PTL',
+		'user_exist'=>'用户已经存在',
+		'setting'=>'邮件设置',
+		'setting_name'=>'设置名称',
+		'setting_value'=>'设置值',
+		'remark'=>'备注',
+		'copy'=>'复制',
+        'split'=>'拆分',
+	);
+	
+?>

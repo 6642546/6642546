@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta charset="UTF-8" />
+    <title>{$Think.lang._OPERATION_FAIL_}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+    <link rel="stylesheet" href="__TMPL__assets/dist/css/bootstrap.css" />
+	 <script src="__TMPL__assets/js/jquery-3.4.1.js"></script>
+     <script src="__TMPL__assets/dist/js/bootstrap.min.js"></script>  
+  	 <script src="/PCN/Tpl/assets/js/jquery-3.4.1.js"></script>
+     <script src="/PCN/Tpl/assets/dist/js/bootstrap.min.js"></script> 
+	 <script src="/PCN/Tpl/assets/dist/js/bootbox.all.min.js"></script> 
+	 
+    <link rel="stylesheet" href="/PCN/Tpl/assets/dist/css/bootstrap.css" /
+</head>
+	<!-- END HEAD -->
+
+<body>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#atest">
+  Launch demo modal
+</button>
+
+<div class="modal"  id ='atest'tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+</body>
+	<!-- PAGE LEVEL SCRIPTS -->
+     <script>
+	$(function(){
+		  
+			var dialog = bootbox.dialog({
+				title: 'A custom dialog with init',
+				message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+			});
+					
+			dialog.init(function(){
+				setTimeout(function(){
+					dialog.find('.bootbox-body').html('I was loaded after the dialog was shown!');
+				}, 3000);
+			})
+			
+			bootbox.prompt({
+                title: "This is a prompt with a range input!",
+				inputType: 'range',
+				min: 0,
+				max: 100,
+				step: 5,
+				value: 35,
+				callback: function (result) {
+					console.log('This was logged in the callback: ' + result);
+				}
+			});
+
+			});
+			
+     </script>
+     <!--END PAGE LEVEL SCRIPTS -->
+</html>

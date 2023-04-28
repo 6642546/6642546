@@ -1,0 +1,40 @@
+#！ /usr/bin/csh
+# Open a window
+WIN 200 200
+# Define font (Times/Bold/Italic 18 points )
+FONT tbi18
+# Define Background Color
+BG aquamarine
+# Define Foreground Color
+FG black
+# Label definition
+LABEL QUESTIONAIRE
+FONT cbr14
+# Text Fields
+TEXT first_name First Name :
+TEXT fam_name Family Name :
+# Radio Box Field
+RADIO sex 'Sex :' H 1 red
+Male
+Female
+END
+BW 1
+BG Goldenrod
+LABEL Hobbies
+BW 0
+# Start horizontal form
+FORM
+# Left element - a list
+LIST hobbies 5 M 1
+Fishing
+Cycling
+Stamp Collection
+Hiking
+Swimming
+END
+BG 997070
+FONT tbi14
+# Right Element - a label
+LABEL <--- Confidential Information
+ENDFORM
+BG aquamarine

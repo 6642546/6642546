@@ -1,0 +1,10 @@
+ PAUSE Open analysis checklist?
+ VOF
+ COM chklist_open,chklist=analysis
+ set STAT = $STATUS
+ VON
+ if ($STAT!= 0) then
+   COM chklist_from_lib,chklist=analysis
+  COM chklist_open,chklist=analysis
+ endif
+ COM chklist_show, chklist=analysis

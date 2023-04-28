@@ -1,0 +1,843 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+  <title>Confirm Form</title>
+
+  <!-- Bootstrap core CSS --> 
+  <link rel="stylesheet" href="__TMPL__assets/dist/css/bootstrap.min.css">
+  <!--link rel="stylesheet" href="__TMPL__assets/dist/css/bootstrap-glyphicons.css"-->
+  <link rel="stylesheet" href="__TMPL__assets/dist/css/styles.css">
+  <!-- Custom styles for this template -->
+  <link href="__TMPL__assets/css/simple-sidebar.css" rel="stylesheet">
+  <!--link href="__TMPL__assets/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
+  <!--<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>-->
+  <link href="__TMPL__/assets/fontawesome/css/all.css" rel="stylesheet">
+  <link href="__TMPL__/assets/css/pcn.css" rel="stylesheet">
+  <link href="__TMPL__assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <link href="__TMPL__assets/fileInput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+  <link href="__TMPL__assets/fileInput/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="__TMPL__/assets/js/jquery-ui.min.css" rel="stylesheet">
+  <link href="__TMPL__/assets/js/jquery-ui.theme.css" rel="stylesheet">
+ 
+ <style>
+    .ui-autocomplete { z-index:2147483647; }
+	.inp {
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: 1px solid #03a8f45e;
+		padding: 5px 15px;
+		outline: none;
+	 }
+    input:read-only
+      {
+	      background-color: red;
+	  }
+	 .file_table td{
+		border:0;
+		padding:2px;
+	}
+
+   .file_del {
+		cursor:pointer;
+  }
+
+
+		 
+ </style>
+
+</head>
+
+<body>
+
+   <div class="d-flex" id="wrapper">
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">      
+        <!--span class="navbar-toggler-icon" id="menu-toggle">&#128263;</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span!-->
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0 " >
+            <li class="nav-item active">
+              <a class="nav-link" href="__APP__"><i class="fa fa-home"></i><?php echo (L("home")); ?> </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fas fa-user" style="font-size: 18px;"></i><?php echo ($userName); ?></a>
+            </li>
+          </ul>
+        </div>
+
+      </nav>	
+	
+		<!--hr style='margin-top:-3px;'-->
+			  <div class="container">
+			    <div class="row" >
+					<div class="col-sm">
+					 <img src="__TMPL__logo.png" class="card-img-top" style="width:50%;height: auto;">
+					</div>
+					<div class="col-sm" style='font-size:15px;'>					
+					  <br>Guangzhou Termbray Electronics Technology Company Limited<br>
+                      广州添利电子科技有限公司<br>
+                      A member of TTM Technologies Group					
+					</div>
+				 </div>	
+				  <p class="text-center font-weight-bold" style='font-size:30px;margin—top:50px;'>Process Change Notice</p>
+			     <form action='__URL__/update' method='post' style='margin-top:0;' enctype="multipart/form-data" class="needs-validation" novalidate id='approvalform'>
+				      <div class="form-group row"  style='border-bottom:1px solid black; font-size:20px;'>
+                       <input type="text" readonly class="form-control-plaintext" id="pcn_no" name='pcn_no' value="No.<?php echo ($vo["pcn_no"]); ?>">
+					  </div>
+					  <div class="form-group row">
+						<label for="internal_pn" class="col-sm-2 col-form-label-sm"><?php echo (L("internal_pn")); ?> :</label>
+						<div class="col-sm-4">
+					    <input type="text" class="form-control col-form-label-sm" id="internal_pn" name='internal_pn' placeholder="<?php echo (L("internal_pn")); ?>" style='width:85%;float:left' value="<?php echo ($vo["internal_pn"]); ?>" readonly  required> 
+						        <div class="invalid-feedback">
+                                     Please key internal P/N.
+                                </div>
+					            <button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Add P/N From Inplan" onclick='showModal()'>
+								  <i class="fas fa-search-plus"></i>
+								</button>
+								 <!--button type="button" class="btn btn-default tico" data-toggle="tooltip" data-placement="top"  title="Add Multiple P/Ns" onclick='test()' >
+								  <i class="far fa-copy"></i>
+								</button-->															
+						</div>
+						<label for="cust_pn" class="col-sm-2 col-form-label-sm"><?php echo (L("cust_pn")); ?> :</label>
+						<div class="col-sm-4">
+						  <input type="text"  class="form-control col-form-label-sm" id="cust_pn" name='cust_pn' placeholder="<?php echo (L("cust_pn")); ?>" value="<?php echo ($vo["cust_pn"]); ?>"  readonly >				
+						</div>
+					  </div>
+					   <div class="form-group row">
+						<label for="cust_name" class="col-sm-2 col-form-label-sm"><?php echo (L("cust_name")); ?> :</label>
+						<div class="col-sm-4">
+						  <input type="text" class="form-control col-form-label-sm" id="cust_name" name='cust_name' placeholder="<?php echo (L("cust_name")); ?>"  value="<?php echo ($vo["cust_name"]); ?>" readonly>
+						</div>
+						<label for="initiator_dept" class="col-sm-2 col-form-label-sm"><?php echo (L("initiator_dept")); ?> :</label>
+						<div class="col-sm-4">
+						  <input type="text" class="form-control col-form-label-sm" id="initiator_dept" name='initiator_dept' value="<?php echo ($vo["initiator_dept"]); ?>" placeholder="<?php echo (L("initiator_dept")); ?>" value="<?php echo ($vo["initiator_dept"]); ?>" readonly>
+						</div>
+					  </div>
+                    <div class="form-group row" style='border-top:1px solid black;border-bottom:1px solid balack;'>
+							<div class='col-sm-2' style='padding-top:10px;'>
+							  <p style='padding: 65% 0;'><?php echo (L("detailed_desp")); ?> :</p>
+							</div>
+							<div class='col-sm-10' style='padding-top:20px;'>
+									 <div class="form-group row">
+										<label for="before_change" class="col-sm-2 col-form-label-sm"><p style='padding: 50% 0;'><?php echo (L("before_change")); ?> :</p></label>
+										<div class="col-sm-10">
+										  <textarea class="form-control" id="before_change" placeholder="<?php echo (L("before_change")); ?>"  name='before_change' rows="6" readonly required><?php echo ($vo["before_change"]); ?></textarea>
+										   <div class="invalid-feedback">
+                                              <?php echo (L("detailed_desp_before")); ?>
+                                           </div>
+										</div>
+										<label for="after_change" class="col-sm-2 col-form-label-sm"><p style='padding: 50% 0;'><?php echo (L("after_change")); ?> :</p></label>
+										<div class="col-sm-10" style='padding-top:10px;'>
+										  <textarea class="form-control" id="after_change" placeholder="<?php echo (L("after_change")); ?>"  name='after_change' rows="6" readonly required><?php echo ($vo["after_change"]); ?></textarea>
+										   <div class="invalid-feedback">
+                                                <?php echo (L("detailed_desp_after")); ?>
+                                           </div>
+										</div>
+									  </div>
+							</div>
+					 </div>
+	                <div class="form-group row"  style='border-top:1px solid black;' >
+							<div class='col-sm-2'  >
+							  <p style='padding: 30% 0;'> <?php echo (L("reason_change")); ?> :</p>
+							</div>
+							<div class='col-sm-10'>
+									 <div class="form-group row"  style='padding-top:20px;'>
+										<label for="before_change" class="col-sm-2 col-form-label-sm"></label>
+										<div class="col-sm-10">
+										  <textarea class="form-control" id="reason_change" placeholder="<?php echo (L("reason_change")); ?>"  name='reason_change' rows="6" readonly required><?php echo ($vo["reason_change"]); ?></textarea>
+										   <div class="invalid-feedback">
+                                               <?php echo (L("reason_change_valid")); ?>
+                                           </div>
+										</div>
+									  </div>
+							</div>
+
+					 </div>
+
+                     <div class="form-group row" style='border-top:1px solid black;border-left:1px solid balack;'>
+							<div class='col-sm-2'  >
+							  <p style='padding-top:20px;'> <?php echo (L("shipping_schedule")); ?></p>
+							</div>
+							<div class='col-sm-10'>
+							    <?php if(($vo["affect_shipping_schedule"]) == "1"): ?><div class="form-check form-check-inline" style='padding-top:20px;'>
+										  <input class="form-check-input" type="radio" name="affect_shipping_schedule" id="affect_shipping_schedule_yes" value="1" checked=true disabled>
+										  <label class="form-check-label" for="affect_shipping_schedule_yes"><?php echo (L("affect_shipping_schedule_yes")); ?></label>
+										</div>
+										<div class="form-check form-check-inline">
+										  <input class="form-check-input" type="radio" name="affect_shipping_schedule" id="affect_shipping_schedule_no" value="0"  disabled>
+										  <label class="form-check-label" for="affect_shipping_schedule_no"><?php echo (L("affect_shipping_schedule_no")); ?></label>
+										</div>
+                               <?php else: ?>
+										<div class="form-check form-check-inline" style='padding-top:20px;'>
+										  <input class="form-check-input" type="radio" name="affect_shipping_schedule" id="affect_shipping_schedule_yes" value="1" disabled>
+										  <label class="form-check-label" for="affect_shipping_schedule_yes"><?php echo (L("affect_shipping_schedule_yes")); ?></label>
+										</div>
+										<div class="form-check form-check-inline">
+										  <input class="form-check-input" type="radio" name="affect_shipping_schedule" id="affect_shipping_schedule_no" value="0"  checked=true  disabled>
+										  <label class="form-check-label" for="affect_shipping_schedule_no"><?php echo (L("affect_shipping_schedule_no")); ?></label>
+										</div><?php endif; ?>
+									<label for="affect_remark" class="col-form-label-sm"><?php echo (L("affect_remark")); ?> :</label>
+					           	   	<input type="text" class="form-control col-form-label-sm" id="affect_remark" name='affect_remark' placeholder="<?php echo (L("affect_remark")); ?>" value="<?php echo ($vo["affect_remark"]); ?>" readonly>
+						         
+							</div>
+							
+					 </div>
+                  <div class="form-group">
+					<div  style='border-top:1px solid black;border-left:1px solid balack;padding-top:20px;'>
+					   <label for="input-res-3">File Gallery</label>
+                        <div class="file-loading">
+                          <input id="input-res-3" name="input-res-3[]" type="file"  multiple>
+                        </div>           
+						
+					</div>
+  
+               
+                 </div>
+                 <?php echo ($timeline); ?>
+				   <div class="form-group row"  style='border-top:1px solid black;' >
+                             <div class='col-sm-9'  >
+							 </div>
+							<div class='col-sm-2'  >
+							     <button type="button" class="btn btn-info" onclick="fomsubmit(1)" style='margin-top:10px;'>Approval</button>
+							</div>
+							<div class='col-sm-1'>
+								 <button type="button" class="btn btn-danger" onclick="fomsubmit(2)" style='margin-top:10px;'>Reject</button>
+							</div>
+
+					 </div>
+				 
+               </form>
+			
+  
+
+<!-- Button trigger modal-->
+					<!-- Modal: modalCart -->
+					<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" 
+					  aria-hidden="true" style="width:1250px;">
+					  <div class="modal-dialog" role="document" >
+						<div class="modal-content" style="width:800px;">
+						  <!--Header-->
+						  <div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">P/N List</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">×</span>
+							</button>
+						  </div>
+						  <!--Body-->
+						 
+          
+						  <div class="modal-body">
+                  
+         
+						<!-- Editable table -->
+								<div class="container-fluid" >
+								
+								<div class="table-wrapper">
+									<div class="table-title">
+										<div class="row">
+											<div class="col-sm-8"><h2>Job <b>Details</b></h2></div>
+											<!--div class="col-sm-4">
+											    <button type="button" class="btn btn-primary add-new" id='add_copy'><i class="fa fa-plus"></i>Copy</button>
+												<button type="button" class="btn btn-info add-new" id='add_new'><i class="fa fa-plus"></i> Add New</button>
+											</div-->
+										</div>
+									</div>
+									<div class="table-wrapper-scroll-y my-custom-scrollbar">
+									<table class="table table-bordered table-sm  table-hover" id='addPnList'>
+										<thead>
+											<tr>
+												<th>Part Number</th>
+												<th>Customer P/N</th>
+												<th>Customer Name</th>
+												<!--th>Actions</th-->
+											</tr>
+										</thead>
+										<tbody>											
+										  <?php echo ($tableDetail); ?>
+										</tbody>
+									</table>
+								</div>
+								</div>
+							</div>     
+						<!-- Editable table -->
+                        <div class="text-info" id='crows'>Total 0 Rows.</div>
+						 
+						  <!--Footer-->
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<!--button class="btn btn-primary" onclick='modal_pn();'>Submit</button-->
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- Modal: modalCart -->
+	
+
+
+	 </div>
+	  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+	<script src="__TMPL__assets/js/jquery-3.4.1.js"></script>
+	<script src="__TMPL__assets/js/popper.min.js"></script>
+	<script src="__TMPL__assets/js/jquery-ui.min.js"></script>
+	<script src="__TMPL__assets/js/ajaxupload.js"></script>
+	<script src="__TMPL__assets/dist/js/bootstrap.min.js"></script>
+	<script src="__TMPL__assets/dist/js/polyfill.min.js"></script> <!-- resolve IE11 Promise-->
+	<script src="__TMPL__assets/fileInput/js/plugins/piexif.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/js/plugins/purify.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/js/plugins/sortable.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/js/fileinput.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/js/locales/fr.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/js/locales/es.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/themes/fas/theme.js" type="text/javascript"></script>
+	<script src="__TMPL__assets/fileInput/themes/explorer-fas/theme.js" type="text/javascript"></script>
+    <script src="__TMPL__assets/gijgo-combined-1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="__TMPL__assets/gijgo-combined-1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+	<script src="__TMPL__assets/js/bootbox.all.js"></script>
+
+	<!--<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.2.2/dist/latest/bootstrap-autocomplete.min.js"></script>-->
+	
+  
+  <!-- Menu Toggle Script -->
+
+</body>
+<script>
+       $('#datepicker').datepicker({
+          // uiLibrary: 'bootstrap4'
+		    format: 'yyyy-mm-dd' ,
+			showOtherMonths: true,	    	
+        });
+	
+      /*Check Valide*/
+		(function() {
+			  'use strict';
+			  window.addEventListener('load', function() {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function(form) {
+				  form.addEventListener('submit', function(event) {
+					if (form.checkValidity() === false) {
+					  event.preventDefault();
+					  event.stopPropagation();
+					}
+					form.classList.add('was-validated');
+				  }, false);
+				});
+			  }, false);
+			})();
+    /*Check Valide end*/
+		$(function(){
+			
+			
+			//alert($('input[name="pcn_no"]').val().replace('No.',''));
+			$(document).on("keypress", "form", function(event) { 
+                   return event.keyCode != 13;
+             });//屏掉form按回车提交
+ 
+		   showModal=function(){
+			$('#modalCart').modal({backdrop:'static'});
+			$('#modalCart').modal('show');
+			$('#crows').html('Total '+($("table tr").length-1)+' Rows');
+		  }
+		    modal_pn=function(){
+			    var tb = document.getElementById('addPnList');    // table 的 id
+				var rows = tb.rows;                           // 获取表格所有行
+                var joblist='';
+				var cspnlist='';
+				var csname='';
+				for(var i = 1; i<rows.length; i++ ){
+				  // for(var j = 0; j<rows[i].cells.length-1; j++ ){    // 遍历该行的 td
+					 //  alert("第"+(i+1)+"行，第"+(j+1)+"个td的值："+rows[i].cells[j].innerHTML+"。");           // 输出每个td的内容
+					 joblist+=rows[i].cells[0].innerHTML+';';
+					 cspnlist+=rows[i].cells[1].innerHTML+';';
+					 csname+=rows[i].cells[2].innerHTML+';';
+				  // }
+				}
+		        $("#internal_pn").val(joblist.substr(0, joblist.length - 1));
+			    $("#cust_pn").val(cspnlist.substr(0, cspnlist.length - 1));
+				$("#cust_name").val(csname.substr(0, csname.length - 1));
+			  // alert($('input[name="pcn_no"]').val().replace('No.',''));
+			$('#modalCart').modal('hide');
+		  }
+		/*提交表单*/
+		fomsubmit=function(stas){
+		   var form = document.getElementById('approvalform');
+           if (stas==2)
+           {
+			    var rj=$("#curr_status1").val()+'/Reject';
+				$("#curr_status").val(rj); 
+           }   
+		  form.submit();
+		}
+
+		  
+
+      /*autocomplate start*/       		 			
+					$( "#suggest-user1" ).autocomplete({
+						source: function( request, response ) {
+							$.ajax({
+								dataType: "json",
+								type : 'Get',
+								url: "__URL__/InplanJob",
+								success: function(data) {
+									$('#suggest-user').removeClass('ui-autocomplete-loading');  
+									// hide loading image
+
+									response( $.map( data, function(item) {
+										// your operation on data
+                                        //	label: item.label,      //自動完成列表的顯示文字
+										//	value: item.label,       //自動完成列表選項的值......選取後會呈現在輸入框的值
+									}));
+								},
+								error: function(data) {
+									$('#suggest-user').removeClass('ui-autocomplete-loading');  
+								}
+							});
+						},
+						minLength: 3,
+						//open: function() {},
+						//close: function() {},
+						//focus: function(event,ui) {},
+						//select: function(event, ui) {}
+					});
+
+	  /*autocomplate end*/
+		/* modal tablestart*/
+		        	$('[data-toggle="tooltip"]').tooltip();
+					var actions = $("table td:last-child").html();
+					 if (!actions)
+					 {
+                        actions='<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>'+
+								'<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>'+
+								'<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>';
+							    
+					 }
+					 // Append table with add row form on add copy button click(from clipboard)
+                    $("#add_copy").click(function(){
+									if (window.ActiveXObject || "ActiveXObject" in window){
+													var content = window.clipboardData.getData('Text');
+													alert(content);
+													if (content!=null) {
+														var valArray = content.split("\n");													
+															for (i=0;i<valArray.length-1;i++) {
+																var row_str = valArray[i].replace(/(^\s*)|(\s*$)/g,'');
+																var _valArray = row_str.split("\t");
+															  //	for (ii=0;ii<_valArray.length-1;ii++) {
+																//	alert(_valArray[ii]);
+																  if (_valArray.length>=3)
+																  {
+																	  var row = '<tr>' +
+																				'<td>'+_valArray[0]+'</td>' +
+																				'<td>'+_valArray[1]+'</td>' +
+																				'<td>'+_valArray[2]+'</td>' +
+																				'<td>' + actions + '</td>' +
+																		   	'</tr>';
+																  }else if(_valArray.length=2){
+																	  var row = '<tr>' +
+																				'<td>'+_valArray[0]+'</td>' +
+																				'<td>'+_valArray[1]+'</td>' +
+																				'<td></td>' +
+																				'<td>' + actions + '</td>' +
+																		   	'</tr>';																  
+																  }else if(_valArray.length=1){
+																            var row = '<tr>' +
+																				'<td>'+_valArray[0]+'</td>' +
+																				'<td></td>' +
+																				'<td></td>' +
+																				'<td>' + actions + '</td>' +
+																		   	'</tr>';
+																  }																	 
+																			$("table").append(row);
+															 }
+													}
+										   }else{																	   
+												alert("Copy function only supports IE browser");
+										   }
+						})
+					// Append table with add row form on add new button click
+					$("#add_new").click(function(){
+						$(this).attr("disabled", "disabled");
+						var index = $("table tbody tr:last-child").index();
+						var row = '<tr>' +
+							'<td><input type="text" class="form-control" name="JobName" id="JobName"></td>' +
+							'<td><input type="text" class="form-control" name="CustPn" id="CustPn"></td>' +
+							'<td><input type="text" class="form-control" name="CustName" id="CustName"></td>' +
+							'<td>' + actions + '</td>' +
+						'</tr>';
+						$("table").append(row);		
+						$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+						$('[data-toggle="tooltip"]').tooltip();
+                        $("#JobName").on("focus", function(){
+								$(this).autocomplete({
+									source: function (request, response)
+									{
+										$.ajax({
+											url: "__URL__/InplanJob", //.asp, .aspx, .ashx 或.php都可以
+											dataType: "json",
+											data: {
+												key: request.term      //回傳的參數
+											},
+
+										
+										  	success: function (data)
+											{
+												
+												response($.map(data, function (item)
+												{
+												
+													return {
+														//label: item.label,      //自動完成列表的顯示文字
+														 value: item.label ,      //自動完成列表選項的值......選取後會呈現在輸入框的值
+														//value: item.value,     //如果jSon字串中有value的值  
+													}
+													 
+												}));
+											
+											}
+										});
+									},
+									minLength: 2,
+									select: function(event, ui) { 
+										
+											$.ajax({
+												url: "__URL__/InplanJob", //.asp, .aspx, .ashx 或.php都可以
+												dataType: "json",
+												data: {
+													key: ui.item.value     //回傳的參數
+												},
+												success: function (data)
+												{
+													//var str = JSON.stringify(data); 
+													//alert(data[0].value);
+												    var cp=data[0].value.split('%');
+											        $("#CustPn").val(cp[0]);
+											       $("#CustName").val(cp[1]);												
+												}
+											});
+										}
+								});
+							});
+					});
+					// Add row on add button click
+					$(document).on("click", ".add", function(){
+						var empty = false;
+						var input = $(this).parents("tr").find('input[type="text"]');
+						input.each(function(){
+							if(!$(this).val()){
+								$(this).addClass("error");
+								empty = true;
+							} else{
+								$(this).removeClass("error");
+							}
+						});
+						$(this).parents("tr").find(".error").first().focus();
+						if(!empty){
+							input.each(function(){
+								$(this).parent("td").html($(this).val());
+							});			
+							$(this).parents("tr").find(".add, .edit").toggle();
+							$(".add-new").removeAttr("disabled");
+						}		
+					});
+					// Edit row on edit button click
+					$(document).on("click", ".edit", function(){		
+						$(this).parents("tr").find("td:not(:last-child)").each(function(){
+							$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+						});		
+						$(this).parents("tr").find(".add, .edit").toggle();
+						$(".add-new").attr("disabled", "disabled");
+					});
+					// Delete row on delete button click
+					$(document).on("click", ".delete", function(){
+						$(this).parents("tr").remove();
+						$(".add-new").removeAttr("disabled");
+					});
+		 
+		/* modal end*/
+           var xx=true;
+		   var tt=true;
+		 $("#input-res-3").fileinput({
+				uploadUrl: "__URL__/fileupload",
+				enableResumableUpload: true,
+				maxFileCount: 5,
+				theme: 'fas',
+				overwriteInitial: false,
+				showUpload: false,
+				showBrowse:false,
+			   // deleteUrl: '__URL_/del_file',
+				initialPreviewShowDelete:false,
+				browseClass: "btn btn-success",
+				showRemove: true,
+				allowedFileExtensions: ['rar','zip','doc','swf','txt','ppt','xls','pdf','msg','7z','gif','jpg','png','html','htm','xlsx','ppt','bmp','docx','tgz','pptx'],  // ['pdf', 'doc', 'docx', 'csv', 'xls', 'xlsx', 'jpg', 'png', 'gif'],	   
+				//previewClass: "bg-warning"
+				deleteExtraData:{'pcn_no': $('input[name="pcn_no"]').val().replace('No.',''),},
+				uploadExtraData: {
+					'uploadToken': 'SOME-TOKEN', // for access control / security 
+					'pcn_no': $('input[name="pcn_no"]').val().replace('No.',''),
+				},
+				uploadAsync: false,
+				//initialPreviewDownloadUrl: 'http://10.120.1.243/webtools/PCN/Uploads/{filename}', // includes the dynamic `filename` tag to be replaced for each config
+				initialPreviewDownloadUrl:<?php echo ($downurl); ?>,
+				initialPreview: <?php echo ($initialPreview); ?>,// [			
+				initialPreviewAsData: true, // defaults markup  
+				initialPreviewConfig: <?php echo ($initialPreviewConfig); ?>,
+				preferIconicPreview: true,
+				fileTypeSettings:
+				{
+					// vType: is the file mime type
+					// vName: is the file name
+						image: function(vType, vName) {
+							return (typeof vType !== "undefined") ? vType.match('image.*') && !vType.match(/(tiff?|wmf)$/i) : vName.match(/\.(gif|png|jpe?g)$/i);
+						},
+						html: function(vType, vName) {
+							return (typeof vType !== "undefined") ? vType == 'text/html' : vName.match(/\.(htm|html)$/i);
+						},
+						office: function (vType, vName) {
+							return vType.match(/(word|excel|powerpoint|office)$/i) ||
+								vName.match(/\.(docx?|xlsx?|pptx?|pps|potx?)$/i);
+						},
+						gdocs: function (vType, vName) {
+							return vType.match(/(word|excel|powerpoint|office|iwork-pages|tiff?)$/i) ||
+								vName.match(/\.(rtf|docx?|xlsx?|pptx?|pps|potx?|ods|odt|pages|ai|dxf|ttf|tiff?|wmf|e?ps)$/i);
+						},
+						text: function(vType, vName) {
+							return typeof vType !== "undefined" && vType.match('text.*') || vName.match(/\.(txt|md|csv|nfo|php|ini)$/i);
+						},
+						video: function (vType, vName) {
+							return typeof vType !== "undefined" && vType.match(/\.video\/(ogg|mp4|webm)$/i) || vName.match(/\.(og?|mp4|webm)$/i);
+						},
+						audio: function (vType, vName) {
+							return typeof vType !== "undefined" && vType.match(/\.audio\/(ogg|mp3|wav)$/i) || vName.match(/\.(ogg|mp3|wav)$/i);
+						},
+						flash: function (vType, vName) {
+							return typeof vType !== "undefined" && vType == 'application/x-shockwave-flash' || vName.match(/\.(swf)$/i);
+						},
+						object: function (vType, vName) {
+							return true;
+						},
+						other: function (vType, vName) {
+							return true;
+						},
+					},
+			
+				previewFileIconSettings: { // configure your icon file extensions
+					'doc': '<i class="fas fa-file-word text-primary"></i>',
+					'xls': '<i class="fas fa-file-excel text-success"></i>',
+					'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+					'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+					'zip': '<i class="fas fa-file-archive text-muted"></i>',
+					'htm': '<i class="fas fa-file-code text-info"></i>',
+					'txt': '<i class="fas fa-file-alt text-info"></i>',
+					'mov': '<i class="fas fa-file-video text-warning"></i>',
+					'mp3': '<i class="fas fa-file-audio text-warning"></i>',
+					// note for these file types below no extension determination logic 
+					// has been configured (the keys itself will be used as extensions)
+					'jpg': '<i class="fas fa-file-image text-danger"></i>', 
+					'gif': '<i class="fas fa-file-image text-muted"></i>', 
+					'png': '<i class="fas fa-file-image text-primary"></i>'    
+				},
+				layoutTemplates :{
+                   actionUpload:'',//去除上传预览缩略图中的上传图片
+				   actionDelete:'',//去除上传的预览删除按钮
+                 },
+				previewFileExtSettings: { // configure the logic for determining icon file extensions
+					'doc': function(ext) {
+						return ext.match(/(doc|docx)$/i);
+					},
+					'xls': function(ext) {
+						return ext.match(/(xls|xlsx)$/i);
+					},
+				   'ppt': function(ext) {
+						return ext.match(/(ppt|pptx)$/i);
+					},
+					'zip': function(ext) {
+						return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+					},
+					'htm': function(ext) {
+						return ext.match(/(htm|html)$/i);
+					},
+					'txt': function(ext) {
+						return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
+					},
+					'mov': function(ext) {
+						return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
+					},
+					'mp3': function(ext) {
+						return ext.match(/(mp3|wav)$/i);
+					},
+					'jpg': function(ext) {
+						return ext.match(/(jpg|png)$/i);
+					}
+				}
+			}).on('fileuploaded', function(event, previewId, index, fileId) {
+				console.log('File Uploaded', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
+			}).on('fileuploaderror', function(event, previewId, index, fileId) {
+				console.log('File Upload Error', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
+			}).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
+				console.log('File Batch Uploaded', preview, config, tags, extraData);
+			}).on('fileuploaded', function(e, params) {
+			console.log('File uploaded params', params);
+			}).on('filepredelete', function(event, key, jqXHR, data) {  
+							console.log('Key = ' + key);  
+							console.log(jqXHR);  
+							console.log(data);  
+							/*if(!confirm("确定删除原文件？删除后不可恢复")){  
+							return false;  
+						} */
+				}).on('fileselect', function(event, numFiles, label) {
+			 
+		});
+		/*end upload file*/
+     var availableTags = [     
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( ".inputFieldClass1" ).autocomplete({
+
+      source: availableTags
+    });
+
+    //upload file 
+	         if($("#upload_rcd")[0]){
+			     var button = $('#upload_rcd');	
+				 var attachType='ccomp';
+			   } else {
+			     var button = $('#upload_button');
+				  var attachType='spcn';
+			   } 
+	            var recordId = 0;
+				var fileType = "all"; 
+				new AjaxUpload(button,{
+					action: '__URL__/other_upload',
+							/*data:{
+								'buttoninfo':button.text()
+							},*/
+							name: 'userfile',
+							data:{'pcn_no':$('input[name="pcn_no"]').val().replace('No.',''),
+							      'attach_type':attachType,
+							},
+							onSubmit : function(file, ext){
+										button.val('Uploading...');
+									},
+									onComplete: function(file, response){
+										this.enable();
+										var varbj = eval('(' + response + ')'); 
+										if(varbj.success == false){
+											alert(varbj.message);
+											button.val('Browse');
+											return;
+										}				
+									if(varbj.success== true)
+											button.val('Browse');
+											button.parent().parent().parent().find("table").append('<tr><td>'+getExt(varbj.ext)+'&nbsp&nbsp'+file+'&nbsp&nbsp['+varbj.size+'&nbspK]&nbsp&nbsp</td><td><img alt="<?php echo (L("del_item")); ?>" class="file_del" src="__TMPL__assets/file_extension_image/b_drop.png" id="'+varbj.id+'"/></td></tr>');                  
+									}
+				});
+				 
+				function getExt (ext) {
+					var extPic = 'common.gif'
+					if (ext == 'pdf') extPic = 'pdf.gif';
+					if (ext == 'rar') extPic = 'rar.gif';
+					if (ext == 'txt') extPic = 'text.gif';
+					if (ext == 'zip') extPic = 'zip.gif';
+					if (ext == 'html') extPic = 'html.gif';
+					if (ext == 'png') extPic = 'image.gif';
+					if (ext == 'gif') extPic = 'gif.gif';
+					if (ext == 'jpg') extPic = 'jpg.gif';
+					if (ext == 'xls') extPic = 'xls.gif';
+					if (ext == 'xlsx') extPic = 'xls.gif';
+					if (ext == 'ppt') extPic = 'ppt.gif';
+					if (ext =='doc') extPic ='msoffice.gif';
+					if (ext =='docx') extPic ='msoffice.gif';
+					return  "<IMG SRC='__TMPL__assets/file_extension_image/"+extPic+"' BORDER='0' alt='' align='absmiddle'>";
+				
+				} 
+                $(document).on("click", ".file_del", function(){
+				        var id = $(this).attr("id");
+						var this_tr = $(this).parent().parent();
+						$.ajax({
+						   type: "GET",
+						   url: '__URL__/del_Attach/id/'+id,
+						   dataType: "json", 
+						   success: function(msg){							
+								this_tr.remove();														 
+						   },
+						   	error: function(msg) {
+									alert(JSON.stringify(msg));
+								}
+
+						}); 
+			     
+				});
+          // $('.fa-envelope').click(function(){alert('dfsdfdsfd');})
+		   $('.fa-envelope').on('click',function(){
+		      	        var mlist = $("#mail_to_list").val();
+						var pcn_no=$("#pcn_no").val().replace('No.','');
+						var nform = $("#nform").is(':checked');
+						if (mlist=='')
+						{
+							//alert("发送人邮件地址不能为空!");
+							bootbox.alert("发送人邮件地址不能为空!");
+							return;
+						}
+						$.ajax({
+						   type: "GET",
+						   url: '__URL__/sendMail/mlist/'+mlist+'/pcn_no/'+pcn_no,
+						   dataType: "json", 
+						   async : false,
+						   data:{'nform':nform},
+						   success: function(msg){	
+							      bootbox.alert(msg.responseText);							    
+								//  var obj=JSON.parse(json);														 
+						   },
+						  	error: function(msg) {							  
+								//alert(JSON.stringify(msg));
+									bootbox.alert(msg.responseText);
+								
+								}
+
+						}); 
+		   
+		   })
+           //$(document).on("click", ".fa-envelope", function(){alert('dfdsfds');});
+				
+
+		});
+
+  
+
+</script>
+
+</html>

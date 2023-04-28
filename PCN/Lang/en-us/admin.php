@@ -1,0 +1,32 @@
+<?php
+	return array(
+	    'Id'  =>'Id',
+		'user_name'         =>'User',
+	 	'user_pwd'         =>'User Pwd',
+		'role'            =>'Role',
+		'access_rule'        =>'Access Rule',
+		'last_time'     =>'Last Login In Time', 
+		'local_ip'       =>'Last Login IP',
+		'status'=>'Status', 	
+		'new'=>'New',
+		'edit'=>'Edit',
+		'dele'=>'Del',
+		'pe'=>'PE Manger Approval',
+		'pre'=>'PRE Manger Approval',
+		'qa'=>'QA Manager Approval',
+		'engd'=>'Engineering Dirc Approval',
+		'mfgd'=>'MFG Dirc Approval',
+		'qad'=>'QA Dirctor Approval',
+		'spcn'=>'Pending Sending Cust PCN',
+		'ccomp'=>'Pending Cust Replying PCN',
+		'pee'=>'Pending Executed PTL',
+		'user_exist'=>'User already exists！',
+		'setting'=>'Mail Setting',
+		'setting_name'=>'Setting Name',
+		'setting_value'=>'Setting Value',
+		'remark'=>'Remark',
+		'copy'=>'Copy',
+        'split'=>'Split',
+	);
+	
+?>

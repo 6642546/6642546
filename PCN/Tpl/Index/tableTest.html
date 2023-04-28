@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello, Bootstrap Table!</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+
+	<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+<style>
+  .select,
+  #locale {
+    width: 100%;
+  }
+  .like {
+    margin-right: 10px;
+  }
+</style>
+  </head>
+<div class="select">
+  <select class="form-control" id="locale">
+    <option value="af-ZA">af-ZA</option>
+    <option value="ar-SA">ar-SA</option>
+    <option value="ca-ES">ca-ES</option>
+    <option value="cs-CZ">cs-CZ</option>
+    <option value="da-DK">da-DK</option>
+    <option value="de-DE">de-DE</option>
+    <option value="el-GR">el-GR</option>
+    <option value="en-US" selected>en-US</option>
+    <option value="es-AR">es-AR</option>
+    <option value="es-CL">es-CL</option>
+    <option value="es-CR">es-CR</option>
+    <option value="es-ES">es-ES</option>
+    <option value="es-MX">es-MX</option>
+    <option value="es-NI">es-NI</option>
+    <option value="es-SP">es-SP</option>
+    <option value="et-EE">et-EE</option>
+    <option value="eu-EU">eu-EU</option>
+    <option value="fa-IR">fa-IR</option>
+    <option value="fi-FI">fi-FI</option>
+    <option value="fr-BE">fr-BE</option>
+    <option value="fr-FR">fr-FR</option>
+    <option value="he-IL">he-IL</option>
+    <option value="hr-HR">hr-HR</option>
+    <option value="hu-HU">hu-HU</option>
+    <option value="id-ID">id-ID</option>
+    <option value="it-IT">it-IT</option>
+    <option value="ja-JP">ja-JP</option>
+    <option value="ka-GE">ka-GE</option>
+    <option value="ko-KR">ko-KR</option>
+    <option value="ms-MY">ms-MY</option>
+    <option value="nb-NO">nb-NO</option>
+    <option value="nl-NL">nl-NL</option>
+    <option value="pl-PL">pl-PL</option>
+    <option value="pt-BR">pt-BR</option>
+    <option value="pt-PT">pt-PT</option>
+    <option value="ro-RO">ro-RO</option>
+    <option value="ru-RU">ru-RU</option>
+    <option value="sk-SK">sk-SK</option>
+    <option value="sv-SE">sv-SE</option>
+    <option value="th-TH">th-TH</option>
+    <option value="tr-TR">tr-TR</option>
+    <option value="uk-UA">uk-UA</option>
+    <option value="ur-PK">ur-PK</option>
+    <option value="uz-Latn-UZ">uz-Latn-UZ</option>
+    <option value="vi-VN">vi-VN</option>
+    <option value="zh-CN">zh-CN</option>
+    <option value="zh-TW">zh-TW</option>
+  </select>
+</div>
+
+<div id="toolbar">
+  <button id="remove" class="btn btn-danger" disabled>
+    <i class="glyphicon glyphicon-remove"></i> Delete
+  </button>
+</div>
+<table
+  id="table"
+  data-toolbar="#toolbar"
+  data-search="true"
+  data-show-refresh="true"
+  data-show-toggle="true"
+  data-show-fullscreen="true"
+  data-show-columns="true"
+  data-show-columns-toggle-all="true"
+  data-detail-view="true"
+  data-show-export="true"
+  data-click-to-select="true"
+  data-detail-formatter="detailFormatter"
+  data-minimum-count-columns="2"
+  data-show-pagination-switch="true"
+  data-pagination="true"
+  data-id-field="id"
+  data-page-list="[10, 25, 50, 100, all]"
+  data-show-footer="true"
+  data-side-pagination="server"
+  data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data"
+  data-response-handler="responseHandler">
+</table>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+  </body>
+<script>
+  var $table = $('#table')
+  var $remove = $('#remove')
+  var selections = []
+
+  function getIdSelections() {
+    return $.map($table.bootstrapTable('getSelections'), function (row) {
+      return row.id
+    })
+  }
+
+  function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function operateFormatter(value, row, index) {
+    return [
+      '<a class="like" href="javascript:void(0)" title="Like">',
+      '<i class="fa fa-heart"></i>',
+      '</a>  ',
+      '<a class="remove" href="javascript:void(0)" title="Remove">',
+      '<i class="fa fa-trash"></i>',
+      '</a>'
+    ].join('')
+  }
+
+  window.operateEvents = {
+    'click .like': function (e, value, row, index) {
+      alert('You click like action, row: ' + JSON.stringify(row))
+    },
+    'click .remove': function (e, value, row, index) {
+      $table.bootstrapTable('remove', {
+        field: 'id',
+        values: [row.id]
+      })
+    }
+  }
+
+  function totalTextFormatter(data) {
+    return 'Total'
+  }
+
+  function totalNameFormatter(data) {
+    return data.length
+  }
+
+  function totalPriceFormatter(data) {
+    var field = this.field
+    return '$' + data.map(function (row) {
+      return +row[field].substring(1)
+    }).reduce(function (sum, i) {
+      return sum + i
+    }, 0)
+  }
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      height: 550,
+      locale: $('#locale').val(),
+      columns: [
+        [{
+          field: 'state',
+          checkbox: true,
+          rowspan: 2,
+          align: 'center',
+          valign: 'middle'
+        }, {
+          title: 'Item ID',
+          field: 'id',
+          rowspan: 2,
+          align: 'center',
+          valign: 'middle',
+          sortable: true,
+          footerFormatter: totalTextFormatter
+        }, {
+          title: 'Item Detail',
+          colspan: 3,
+          align: 'center'
+        }],
+        [{
+          field: 'name',
+          title: 'Item Name',
+          sortable: true,
+          footerFormatter: totalNameFormatter,
+          align: 'center'
+        }, {
+          field: 'price',
+          title: 'Item Price',
+          sortable: true,
+          align: 'center',
+          footerFormatter: totalPriceFormatter
+        }, {
+          field: 'operate',
+          title: 'Item Operate',
+          align: 'center',
+          clickToSelect: false,
+          events: window.operateEvents,
+          formatter: operateFormatter
+        }]
+      ]
+    })
+    $table.on('check.bs.table uncheck.bs.table ' +
+      'check-all.bs.table uncheck-all.bs.table',
+    function () {
+      $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+
+      // save your data, here just save the current page
+      selections = getIdSelections()
+      // push or splice the selections if you want to save all data selections
+    })
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+    $remove.click(function () {
+      var ids = getIdSelections()
+      $table.bootstrapTable('remove', {
+        field: 'id',
+        values: ids
+      })
+      $remove.prop('disabled', true)
+    })
+  }
+
+  $(function() {
+    initTable()
+
+    $('#locale').change(initTable)
+  })
+</script>
+
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="http://cdn-na.infragistics.com/igniteui/2019.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2019.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/infragistics.lob.js"></script>
+
+    <style>
+        .s-clearfix {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .ml5 {
+            margin-left: 5px;
+        }
+
+        .mt4 {
+            margin-top: 4px;
+        }
+
+        .border-box {
+            box-sizing: border-box;
+        }
+
+        .igui-filter-f-left {
+            float: left;
+        }
+
+        .igui-filter-f-right {
+            float: right;
+        }
+
+        .igui-filter-checkbox label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="border-box igui-filter-checkbox">
+        <div class="mb10 s-clearfix">
+            <input class="mr5 igui-filter-f-left" id="useSingleRequestCheck" type="checkbox" />
+            <label class="ml5 igui-filter-f-right mt4" for="useSingleRequestCheck">Use a Single Request for Uploading Multiple Files</label>
+        </div>
+    </div>
+
+    <div id="igUpload1"></div>
+    <div id="error-message" style="color: #FF0000; font-weight: bold;"></div>
+
+    <script>
+        $(function () {
+            var buttonLabel = $.ig.Upload.locale.labelUploadButton;
+            if (Modernizr.input.multiple) {
+                buttonLabel = "Drag and Drop Files Here <br/> or Click to Select From a Dialog";
+            }
+            $("#igUpload1").igUpload({
+                mode: 'multiple',
+                multipleFiles: true,
+                maxUploadedFiles: 5,
+                maxSimultaneousFilesUploads: 2,
+                progressUrl: "https://www.igniteui.com/IGUploadStatusHandler.ashx",
+                controlId: "serverID1",
+                labelUploadButton: buttonLabel,
+                onError: function (e, args) {
+                    showAlert(args);
+                }
+            });
+            if (Modernizr.input.multiple) {
+                $(".ui-igstartupbrowsebutton").attr("style", "width: 320px; height: 80px;");
+            }
+            $("#useSingleRequestCheck").igCheckboxEditor({
+                checked: false,
+                valueChanged: function (evt, ui) {
+                    $("#igUpload1").igUpload("option", "useSingleRequest", ui.newState);
+                }
+            });
+        });
+
+        function showAlert(args) {
+            $("#error-message").html(args.errorMessage).stop(true, true).fadeIn(500).delay(3000).fadeOut(500);
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+<label for="input-res-3">File Gallery</label>
+<div class="file-loading">
+    <input id="input-res-3" name="input-res-3[]" type="file" multiple>
+</div>
+<script>
+$(document).ready(function() {
+    $("#input-res-3").fileinput({
+        uploadUrl: "/site/upload-file-chunks",
+        enableResumableUpload: true,
+        maxFileCount: 5,
+        theme: 'fas',
+        deleteUrl: '/site/file-delete',
+        uploadExtraData: {
+            uploadToken: "SOME_VALID_TOKEN"
+        },
+        overwriteInitial: false,
+        initialPreview: [
+            // TEXT DATA
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut mauris ut libero fermentum feugiat eu et dui. Mauris condimentum rhoncus enim, sed semper neque vestibulum id. Nulla semper, turpis ut consequat imperdiet, enim turpis aliquet orci, eget venenatis elit sapien non ante. Aliquam neque ipsum, rhoncus id ipsum et, volutpat tincidunt augue. Maecenas dolor libero, gravida nec est at, commodo tempor massa. Sed id feugiat massa. Pellentesque at est eu ante aliquam viverra ac sed est.",
+            // PDF DATA
+            'http://kartik-v.github.io/bootstrap-fileinput-samples/samples/pdf-sample.pdf',
+            // VIDEO DATA
+            "http://kartik-v.github.io/bootstrap-fileinput-samples/samples/small.mp4"
+        ],
+        initialPreviewAsData: true, // defaults markup  
+        initialPreviewConfig: [
+            {caption: "Lorem Ipsum.txt", type: "text", size: 1430, url: "/site/file-delete", key: 12}, 
+            {type: "pdf", size: 8000, caption: "PDF Sample.pdf", url: "/site/file-delete", key: 14}, 
+            {type: "video", size: 375000, filetype: "video/mp4", caption: "Krajee Sample.mp4", url: "/site/file-delete", key: 15} 
+        ],
+        preferIconicPreview: true,
+        previewFileIconSettings: { // configure your icon file extensions
+            'doc': '<i class="fas fa-file-word text-primary"></i>',
+            'xls': '<i class="fas fa-file-excel text-success"></i>',
+            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+            'zip': '<i class="fas fa-file-archive text-muted"></i>',
+            'htm': '<i class="fas fa-file-code text-info"></i>',
+            'txt': '<i class="fas fa-file-alt text-info"></i>',
+            'mov': '<i class="fas fa-file-video text-warning"></i>',
+            'mp3': '<i class="fas fa-file-audio text-warning"></i>',
+            // note for these file types below no extension determination logic 
+            // has been configured (the keys itself will be used as extensions)
+            'jpg': '<i class="fas fa-file-image text-danger"></i>', 
+            'gif': '<i class="fas fa-file-image text-muted"></i>', 
+            'png': '<i class="fas fa-file-image text-primary"></i>'    
+        },
+        previewFileExtSettings: { // configure the logic for determining icon file extensions
+            'doc': function(ext) {
+                return ext.match(/(doc|docx)$/i);
+            },
+            'xls': function(ext) {
+                return ext.match(/(xls|xlsx)$/i);
+            },
+            'ppt': function(ext) {
+                return ext.match(/(ppt|pptx)$/i);
+            },
+            'zip': function(ext) {
+                return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+            },
+            'htm': function(ext) {
+                return ext.match(/(htm|html)$/i);
+            },
+            'txt': function(ext) {
+                return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
+            },
+            'mov': function(ext) {
+                return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
+            },
+            'mp3': function(ext) {
+                return ext.match(/(mp3|wav)$/i);
+            }
+        }
+    }).on('fileuploaded', function(event, previewId, index, fileId) {
+        console.log('File Uploaded', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
+    }).on('fileuploaderror', function(event, previewId, index, fileId) {
+        console.log('File Upload Error', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
+    }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
+        console.log('File Batch Uploaded', preview, config, tags, extraData);
+    });
+ 
+    // uncomment below if you need to monitor file upload chunk status or take actions based on events
+    /*
+    $("#input-res-3").on('filechunkbeforesend', function(event, fileId, index, retry, fm, rm, outData) {
+        console.log('File Chunk Before Send', 'ID: ' + fileId + ', Index: ' + index + ', Retry: ' + retry);
+    }).on('filechunksuccess', function(event, fileId, index, retry, fm, rm, outData) {
+        console.log('File Chunk Success', 'ID: ' + fileId + ', Index: ' + index + ', Retry: ' + retry);
+    }).on('filechunkerror', function(event, fileId, index, retry, fm, rm, outData) {
+        console.log('File Chunk Error', 'ID: ' + fileId + ', Index: ' + index + ', Retry: ' + retry);
+    }).on('filechunkajaxerror', function(event, fileId, index, retry, fm, rm, outData) {
+        console.log('File Chunk Ajax Error', 'ID: ' + fileId + ', Index: ' + index + ', Retry: ' + retry);
+    }).on('filechunkcomplete', function(event, fileId, index, retry, fm, rm, outData) {
+        console.log('File Chunk Complete', 'ID: ' + fileId + ', Index: ' + index + ', Retry: ' + retry);
+    });
+    */
+ 
+    // uncomment below if you need file's test status (via resumableUploadOptions.testUrl) or take actions based on events
+    /*
+    $("#input-res-3").on('filetestbeforesend', function(event, fileId, fm, rm, outData) {
+        console.log('File Test Before Send', 'ID: ' + fileId);
+    }).on('filetestsuccess', function(event, fileId, fm, rm, outData) {
+        console.log('File Test Success', 'ID: ' + fileId);
+    }).on('filetesterror', function(event, fileId, fm, rm, outData) {
+        console.log('File Test Error', 'ID: ' + fileId);
+    }).on('filetestajaxerror', function(event, fileId, fm, rm, outData) {
+        console.log('File Test Ajax Error', 'ID: ' + fileId);
+    }).on('filetestcomplete', function(event, fileId, fm, rm, outData) {
+        console.log('File Test Complete', 'ID: ' + fileId);
+    });;
+    */
+});
+</script>

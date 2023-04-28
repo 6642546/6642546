@@ -1,0 +1,37 @@
+<include file="Public:header"/>
+<style>
+	.container {
+		width:500px;
+		height:300px;
+		margin: auto;  
+		position: absolute;  
+		top: 0; left: 0; bottom: 0; right: 0;  
+		}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="widget flat radius-bordered">
+			<div class="widget-header btn-primary">
+				<span class="widget-caption"><i class="fa fa-bullhorn"></i> {$msgTitle}</span>
+			</div>
+
+			<div class="widget-body">
+				<p><i class="fa fa-exclamation-circle"></i> &nbsp;{$message} {$Think.lang.system_jump}</p>
+				<center>
+					<a href="{$jumpUrl}" class="btn btn-primary text-center text-muted ">{$Think.lang.return}</a>
+				</center>
+			</div>
+		</div>
+	</div>
+	<script>
+		setTimeout(function() {
+			location.href = '{$jumpUrl}';
+		}, 2000);
+	</script>
+</body>
+	<!-- PAGE LEVEL SCRIPTS -->
+      <script src="__TMPL__assets/js/jquery-2.0.3.min.js"></script>
+      <script src="__TMPL__assets/js/bootstrap.min.js"></script>
+     <!--END PAGE LEVEL SCRIPTS -->
+</html>
