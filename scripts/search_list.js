@@ -1,0 +1,373 @@
+$(document).ready(function(){
+   
+	var action = $(".navlist .selected").text().toLowerCase();
+	var kw = request("kw");
+	if (!action) action = request("action");
+		if (action == 'specification')
+		{
+			prepareSpecGrid(action,kw);
+		} else if (action == 'inplan')
+		{
+			
+			prepareTravellerGrid(action,kw);
+		} else if (action == 'tq')
+		{
+			prepareTQGrid(action,kw);
+		}
+		 else if (action == 'genesis')
+		{
+			//prepareCamGrid(action);
+			$(".grid").append("Comming soon...");
+		}
+
+		
+		$('#adv_search_cl').bind("click",
+			function(){
+            if ($.cookie('FEEWEB_uName')) {
+			$('#inplan').window('open');
+			}else {
+				
+			window.location.href = $("#login_url").attr("href");
+			//$('#inplan').window('open');
+			}
+		});
+        $('#top_search_btn').bind("click",
+			function(){						
+				var keyword = $('#top_search_txt').val();
+				if (!keyword)
+				{
+					alert('Please input key word to search.');
+					return;
+				}
+			 $('.sDiv2 input:first').val(keyword);
+              if ($("#site_text").html()=='GZ' )
+				{
+				  var radArr = document.getElementsByName("s_site1");
+				  var radValue = "";
+				  for(var i=0; i<radArr.length; i++){			 
+					if(radArr[i].checked){
+						 radValue = radArr[i].value;
+					} 
+				 }	
+				$("#mygrid").flexigrid({url:'inplan/getlist.php?site='+$("#site_text").html()+'&action='+action+'&filterType='+radValue+'&filterVal='+keyword.toUpperCase()});
+				$("#mygrid").flexOptions({url:'inplan/getlist.php?site='+$("#site_text").html()+'&action='+action+'&filterType='+radValue+'&filterVal='+keyword.toUpperCase()}).flexReload(); 	
+				}               
+			      $('.sDiv2 input:[value=Search]').trigger("click");
+		})
+
+		$('#top_search_cl').bind("click",
+			function(){
+				$('#top_search_txt').val("");
+				$('.sDiv2 input:first').val("");
+				$('.sDiv2 input:[value=Search]').trigger("click");
+		})
+
+		$('#top_search_txt').bind('keyup', function(event){
+			if (event.keyCode=="13"){
+				$('#top_search_btn').trigger("click");
+			}
+		})
+		
+	//$('.pSearch').click();
+	$(".s_letter").live("click",function(){
+		$('.sDiv2 input:first').val('prefix-'+$(this).html());
+		$('.sDiv2 input:[value=Search]').trigger("click");
+	}
+	
+	)
+});
+
+function request(paras)
+    { 
+        var url = location.href; 
+        var paraString = url.substring(url.indexOf("?")+1,url.length).split("&"); 
+        var paraObj = {} 
+        for (i=0; j=paraString[i]; i++){ 
+        paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length); 
+        } 
+        var returnValue = paraObj[paras.toLowerCase()]; 
+        if(typeof(returnValue)=="undefined"){ 
+        return ""; 
+        }else{ 
+        return returnValue; 
+        } 
+    }	
+function prepareSpecGrid(action,kw){
+	var auto_load = true;
+	if (kw)
+	{
+		auto_load = false;
+	}
+	$("#mygrid").flexigrid
+				(
+				{
+				url: 'spec/getlist.php?site='+$("#site_text").html()+'&action='+action,
+				dataType: 'json',
+				//checkBoxSelect: true,
+				showZero : false,
+				colModel : [
+				    
+					{display: 'Spec Name', name : 'item_name', width : 300, hide : false, align: 'left',needOrder:true },
+					{display: 'Description', name : 'description', width : 350, hide : false, align: 'left',needOrder:true},
+					{display: 'Priority', name : 'priority', width : 80, hide : false, align: 'left',needOrder:true}
+					],
+				onRowDblclick:procMe,
+				usepager: true,
+				filter: true,
+				keyFilter:'item_name',
+				searchitems : [
+									{display: 'Spec Name', name : 'item_name',isdefault: true,operater:'Like'},
+									{display: 'Description', name : 'description', operater:'Like'}
+							   ],
+				autoload: auto_load,
+				rp: 15,
+				useRp:true,
+				width: 930,
+				height: 380
+				}
+	);
+	if (auto_load == false)
+	{
+		$('.sDiv2 input:first').val(kw);
+		$('#top_search_txt').val(kw)
+		$('.sDiv2 input:[value=Search]').trigger("click");
+
+	}
+}
+
+function prepareTravellerGrid(action,kw){
+	var auto_load = true;
+	if (kw)
+	{
+		auto_load = false;
+	}
+
+
+	if ($("#site_text").html()=='GZ' || $("#site_text").html()=='ZS')
+   {
+		
+	$("#mygrid").flexigrid
+				(
+				{
+				url: 'inplan/getlist.php?site='+$("#site_text").html()+'&action='+action,
+				dataType: 'json',
+				//checkBoxSelect: true,
+				showZero : false,
+		colModel : [
+				    
+					{display: 'Job_Name', name : 'item_name', width : 150, hide : false, align: 'left',needOrder:true },
+					{display: 'Customer P/N', name : 'customer_pn_', width : 200, hide : false, align: 'left',needOrder:true },
+					{display: 'Customer Name', name : 'customer_name', width : 300, hide : false, align: 'left',needOrder:true},
+					{display: 'End Customer Code', name : 'customer_code', width : 150, hide : false, align: 'left',needOrder:true},
+					{display: 'Status', name : 'status', width : 150, hide : false, align: 'left',needOrder:true}
+					],
+				/*	colModel : [
+				    
+					{display: 'Job_Name', name : 'item_name', width : 150, hide : false, align: 'left',needOrder:true },
+					{display: 'Viasystems P/N', name : 'mrp_name', width : 150, hide : false, align: 'left',needOrder:true },
+					{display: 'Customer P/N', name : 'name', width : 150, hide : false, align: 'left',needOrder:true},
+					{display: 'Layer Count', name : 'num_layers', width : 80, hide : false, align: 'left',needOrder:true},
+					{display: 'Remark', name : 'read_me', width : 280, hide : false, align: 'left',needOrder:false} 
+					], */
+				onRowDblclick:procMe,
+				usepager: true,
+				filter: true,
+				keyFilter:'item_name',
+				searchitems : [
+									{display: 'Job_Name', name : 'item_name',isdefault: true,operater:'Like'},
+									{display: 'Customer P/N', name : 'customer_pn_',isdefault: true,operater:'Like'},
+									{display: 'Customer Name', name : 'customer_name',isdefault: true,operater:'Like'},
+									{display: 'End Customer Code', name : 'customer_code', operater:'Like'}
+							   ],
+				autoload: auto_load,
+				rp: 15,
+				useRp:true,
+				width: 930,
+				height: 380
+				}
+	);
+	}else{
+
+	$("#mygrid").flexigrid
+				(
+				{
+				url: 'inplan/getlist.php?site='+$("#site_text").html()+'&action='+action,
+				dataType: 'json',
+				//checkBoxSelect: true,
+				showZero : false,
+				colModel : [
+				    
+					{display: 'Site Tooling P/N', name : 'item_name', width : 150, hide : false, align: 'left',needOrder:true },
+					{display: 'Company P/N', name : 'mrp_name', width : 150, hide : false, align: 'left',needOrder:true },
+					{display: 'Customer P/N', name : 'name', width : 150, hide : false, align: 'left',needOrder:true},
+					{display: 'Layer Count', name : 'num_layers', width : 80, hide : false, align: 'left',needOrder:true},
+					{display: 'Remark', name : 'read_me', width : 280, hide : false, align: 'left',needOrder:false} 
+					],
+				onRowDblclick:procMe,
+				usepager: true,
+				filter: true,
+				keyFilter:'item_name',
+				searchitems : [
+									{display: 'Site Tooling P/N', name : 'item_name',isdefault: true,operater:'Like'},
+									{display: 'Company P/N', name : 'mrp_name',isdefault: true,operater:'Like'},
+									{display: 'Customer P/N', name : 'name',isdefault: true,operater:'Like'},
+									{display: 'Layer Count', name : 'num_layers', operater:'Like'}
+							   ],
+				autoload: auto_load,
+				rp: 17,
+				useRp:true,
+				width: 930,
+				height: 380
+				}
+	);
+	}
+	if (auto_load == false)
+	{
+		$('.sDiv2 input:first').val(kw);
+		$('#top_search_txt').val(kw)
+		$('.sDiv2 input:[value=Search]').trigger("click");
+
+	}
+} 
+
+function prepareTQGrid(action,kw){
+	var auto_load = true;
+	if (kw)
+	{
+		auto_load = false;
+	}
+	$("#mygrid").flexigrid
+				(
+				{
+				url: 'tq/getlist.php?site='+$("#site_text").html()+'&action='+action,
+				dataType: 'json',
+				//checkBoxSelect: true,
+				showZero : true,
+				colModel : [
+					{display: 'Customer Name', name : 'customer_name', width : 120, hide : false, align: 'left',needOrder:true},
+					{display: 'End Cust Name', name : 'end_cust_name', width : 100, hide : false, align: 'left',needOrder:true},
+					{display: 'Customer P/N', name : 'customer_pn', width : 150, hide : false, align: 'left',needOrder:true},
+					{display: 'Cust Rev', name : 'customer_rev', width : 50, hide : false, align: 'left',needOrder:true},
+					{display: 'Site Tooling P/N', name : 'site_tooling_pn', width : 110, hide : false, align: 'left',needOrder:true },
+					{display: 'Company P/N', name : 'viasystems_pn', width : 100, hide : false, align: 'left',needOrder:true },
+					{display: 'Received Date', name : 'received_date', width : 120, hide : false, align: 'left',needOrder:true},
+					{display: 'Site', name : 'site_name', width : 40, hide : false, align: 'left',needOrder:true}
+					],
+				onRowDblclick:procMe,
+				usepager: true,
+				filter: true,
+				keyFilter:'item_name',
+				searchitems : [		
+									{display: 'Customer P/N', name : 'customer_pn',isdefault: true,operater:'Like'},
+									{display: 'Customer Name', name : 'customer_name',isdefault: true,operater:'Like'},
+									{display: 'End Cust Name', name : 'end_cust_name',isdefault: true,operater:'Like'},
+									{display: 'Site Tooling P/N', name : 'site_tooling_pn',isdefault: true,operater:'Like'},
+									{display: 'Company P/N', name : 'viasystems_pn',isdefault: true,operater:'Like'},
+									{display: 'Received Date', name : 'received_date', operater:'Like'}
+							   ],
+				autoload: auto_load,
+				rp: 15,
+				useRp:true,
+				width: 930,
+				height: 380
+				}
+	);
+
+	if (auto_load == false)
+	{
+		$('.sDiv2 input:first').val(kw);
+		$('#top_search_txt').val(kw)
+		$('.sDiv2 input:[value=Search]').trigger("click");
+
+	}
+} 
+
+
+function procMe(rowData){
+  //	$('body').mask("Loading...");
+	var action = $(".navlist .selected").text().toLowerCase();
+	if (!action) action = request('action');
+	if (action =='specification')
+	{	if ($("#lang_code").html() == 'zh-cn')
+		{
+			window.location.href='index.php?site='+$("#site_text").html()+'&action=specification&spec_name='+$.trim($(rowData).data("item_name").toString())+'&lang=zh-cn';
+		} 
+		else {
+			window.location.href='index.php?site='+$("#site_text").html()+'&action=specification&spec_name='+$.trim($(rowData).data("item_name").toString());
+		}
+		
+	} else if (action =='tq')
+	{
+		var job_name = $.trim($(rowData).data("customer_pn").toString());
+		if ($.trim($(rowData).data("customer_rev").toString())!='')
+		{
+			job_name += ' Rev ' + $.trim($(rowData).data("customer_rev").toString());
+		}
+		var url = 'index.php?site='+$("#site_text").html()+'&action=tq'+'&job_name='+job_name;
+		url = url + '&data=TQ&tq_pn=yes';
+		if ($("#lang_code").html() == 'zh-cn')
+		{
+			window.location.href=url+'&lang=zh-cn';
+		} else 
+		{
+			window.location.href=url;
+		}
+	}
+	else if (action =='inplan')
+	{
+		var url = 'index.php?site='+$("#site_text").html()+'&action=inplan'+'&job_name='+$.trim($(rowData).data("item_name").toString());
+		
+		if (request('data')=='')
+		{
+			if ($("#site_text").html()=='GZ' || $("#site_text").html()=='ZS')
+			{
+				url = url + '&data=Job Attributes';
+	
+			}else{
+			if ($.trim($(rowData).data("mrp_name").toString()).indexOf('750')!=0)
+			{
+				url = url + '&data=Job Attributes';
+			}
+			}
+		} else if (request('data')=='Drawing') {
+			url = url + '&data=Drawing';
+		} else {
+			url = url + '&data=Traveller Routing';
+		}
+     if ($("#site_text").html()=='HY')
+		{
+	   if ($.trim($(rowData).data("mrp_name").toString()).indexOf('750')==0)
+		{
+			if (request('data')=='')
+			{
+				url = url + '&data=Traveller Routing';
+			}
+			url = url + '&process='+$.trim($(rowData).data("mrp_name").toString());
+		}
+		}
+		if ($("#lang_code").html() == 'zh-cn')
+		{
+             window.open(url);
+		 	//window.location.href=url+'&lang=zh-cn';
+		} else 
+		{
+			window.open(url);
+			//
+		//alert('kjdfkjfdskfdskfds');
+			
+			//window.location.href=url;
+		}
+		
+	} 
+	else if (action =='genesis')
+	{
+		if ($("#lang_code").html() == 'zh-cn')
+		{
+			window.location.href='index.php?site='+$("#site_text").html()+'&action=genesis&t_code='+$.trim($(rowData).data("item_name").toString())+'&lang=zh-cn';
+		} else {
+			window.location.href='index.php?site='+$("#site_text").html()+'&action=genesis&t_code='+$.trim($(rowData).data("item_name").toString());
+		}
+		
+	} 
+	
+}

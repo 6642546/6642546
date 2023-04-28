@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/repos/inplan/!svn/ver/606/feeweb/admin
+END
+logout.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/repos/inplan/!svn/ver/596/feeweb/admin/logout.php
+END
+login_chk.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/login_chk.php
+END
+remove.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/remove.php
+END
+getuser.php
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/repos/inplan/!svn/ver/604/feeweb/admin/getuser.php
+END
+mysql_conn.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/repos/inplan/!svn/ver/604/feeweb/admin/mysql_conn.php
+END
+adduser.php
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/adduser.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/index.php
+END
+add.php
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/add.php
+END
+login.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/repos/inplan/!svn/ver/606/feeweb/admin/login.php
+END

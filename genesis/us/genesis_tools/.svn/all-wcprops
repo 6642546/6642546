@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools
+END
+genesis_jobs.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/repos/inplan/!svn/ver/418/feeweb/genesis/us/genesis_tools/genesis_jobs.php
+END
+panel_report.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/panel_report.php
+END
+genesis_steps.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/repos/inplan/!svn/ver/418/feeweb/genesis/us/genesis_tools/genesis_steps.php
+END
+layers_rpt.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/repos/inplan/!svn/ver/418/feeweb/genesis/us/genesis_tools/layers_rpt.inc.php
+END
+mars_jobs.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/mars_jobs.php
+END
+run_layers_rpt.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/run_layers_rpt.inc.php
+END
+mars_revs.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/mars_revs.php
+END
+cu_dist.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/repos/inplan/!svn/ver/418/feeweb/genesis/us/genesis_tools/cu_dist.inc.php
+END
+copper_report.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/repos/inplan/!svn/ver/418/feeweb/genesis/us/genesis_tools/copper_report.php
+END
+panel_util.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/panel_util.inc.php
+END
+run_copper.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/run_copper.inc.php
+END
+run_panel_util.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/repos/inplan/!svn/ver/420/feeweb/genesis/us/genesis_tools/run_panel_util.inc.php
+END

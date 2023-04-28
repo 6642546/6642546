@@ -1,0 +1,46 @@
+.tq_h1 {
+			font-size: medium;
+			background:#ADADAD;
+			color:white;
+			height:25px;
+			font-weight:bold;
+			padding-left:10px;
+			border-bottom:5px solid red;
+}
+
+img {
+	border: 0;
+}
+
+
+.tq_table {
+	border-collapse:collapse;
+	border:solid 1px #A7C5FF;
+	width:100%;
+}
+
+.tq_table th {
+	font-size: medium;
+	background:#ADADAD;
+	color:white;
+	height:25px;
+	font-weight:bold;
+	padding-left:5px;
+	border-bottom:1px solid #A7C5FF;
+}
+
+.tq_table td {
+	font-size:14px;
+	background:#FFF8D7;
+	padding-left:5px;
+	border-bottom:1px solid #A7C5FF;
+}
+
+.tq_table a {
+	color:#2C6AA9;
+	line-height:25px;
+}
+
+.tq_table .size {
+	font-size:12px;
+}

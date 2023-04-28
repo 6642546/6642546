@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/repos/inplan/!svn/ver/680/feeweb/buildability
+END
+dlgs.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/repos/inplan/!svn/ver/659/feeweb/buildability/dlgs.php
+END
+login_chk.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/repos/inplan/!svn/ver/379/feeweb/buildability/login_chk.php
+END
+get_admin_email.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/repos/inplan/!svn/ver/312/feeweb/buildability/get_admin_email.php
+END
+delete_buildability.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/repos/inplan/!svn/ver/335/feeweb/buildability/delete_buildability.php
+END
+send_email.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/342/feeweb/buildability/send_email.php
+END
+getsearchlist.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/inplan/!svn/ver/474/feeweb/buildability/getsearchlist.php
+END
+check_complete.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/check_complete.php
+END
+save_plating_data.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/repos/inplan/!svn/ver/327/feeweb/buildability/save_plating_data.php
+END
+ldap_user_data.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/repos/inplan/!svn/ver/287/feeweb/buildability/ldap_user_data.php
+END
+logout.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/repos/inplan/!svn/ver/287/feeweb/buildability/logout.php
+END
+getlist_.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/repos/inplan/!svn/ver/284/feeweb/buildability/getlist_.php
+END
+check_pn.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/repos/inplan/!svn/ver/342/feeweb/buildability/check_pn.php
+END
+get_plating_values.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/repos/inplan/!svn/ver/336/feeweb/buildability/get_plating_values.php
+END
+role_data.json
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/287/feeweb/buildability/role_data.json
+END
+mysql_conn.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/599/feeweb/buildability/mysql_conn.php
+END
+oracle_conn.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/340/feeweb/buildability/oracle_conn.php
+END
+showgrid_.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/repos/inplan/!svn/ver/284/feeweb/buildability/showgrid_.php
+END
+comment_form.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/repos/inplan/!svn/ver/278/feeweb/buildability/comment_form.php
+END
+showgrid.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/repos/inplan/!svn/ver/318/feeweb/buildability/showgrid.php
+END
+delete_note.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/312/feeweb/buildability/delete_note.php
+END
+change_status.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/change_status.php
+END
+save_email_config.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/repos/inplan/!svn/ver/290/feeweb/buildability/save_email_config.php
+END
+create_buildability.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/create_buildability.php
+END
+getpns.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/repos/inplan/!svn/ver/312/feeweb/buildability/getpns.php
+END
+getusers.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/repos/inplan/!svn/ver/287/feeweb/buildability/getusers.php
+END
+get_config.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/290/feeweb/buildability/get_config.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/repos/inplan/!svn/ver/676/feeweb/buildability/index.php
+END
+functions.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/functions.php
+END
+getuserdata.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/294/feeweb/buildability/getuserdata.php
+END
+save_entry_data.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/repos/inplan/!svn/ver/314/feeweb/buildability/save_entry_data.php
+END
+getlist.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/getlist.php
+END
+modify_note.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/312/feeweb/buildability/modify_note.php
+END
+getgroups.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/repos/inplan/!svn/ver/291/feeweb/buildability/getgroups.php
+END
+add_member.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/312/feeweb/buildability/add_member.php
+END
+html2pdf.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/repos/inplan/!svn/ver/361/feeweb/buildability/html2pdf.php
+END
+run_logic.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/run_logic.php
+END
+entry_form.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/659/feeweb/buildability/entry_form.php
+END
+upload.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/repos/inplan/!svn/ver/327/feeweb/buildability/upload.php
+END
+close_open.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/inplan/!svn/ver/327/feeweb/buildability/close_open.php
+END
+showdetails.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/679/feeweb/buildability/showdetails.php
+END
+email.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/repos/inplan/!svn/ver/342/feeweb/buildability/email.php
+END
+core.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/repos/inplan/!svn/ver/599/feeweb/buildability/core.php
+END
+create_note.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/inplan/!svn/ver/346/feeweb/buildability/create_note.php
+END

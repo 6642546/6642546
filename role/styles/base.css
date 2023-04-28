@@ -1,0 +1,141 @@
+*{font: 14px/17px Arial,sans-serif;}
+td{line-height:1.5;}
+form,h1,h2,h3,ul,ol,div{margin:0;padding:0;}
+td,th,div{word-break:break-all;word-wrap:break-word;}
+b,strong{color:#666600;}
+li,dd{list-style-type:none;margin:0px;padding:0px;}
+input{border:1px solid #ababab;zoom:expression(function(ele){(ele.type=='button'||ele.type=='submit'||ele.type=='reset') ?	ele.className='coolbg':(ele.type=='text' ?	ele.className='alltxt':'');(ele.type=='radio'||ele.type=='checkbox') ?	ele.className='np':'';ele.style.zoom = '1';}(this));}
+input{background:url(../images/input.png) repeat-x scroll 0px 0px;}
+select{padding:3px;}
+input[type="button"],input[type="submit"],input[type="reset"]{border:none;border-right:1px solid #ACACAC;border-bottom:1px solid #ACACAC;background-color:#F1F8B4;padding:2px;padding-right:5px;padding-left:5px;background:url(../images/allbtbg2.gif) #EFF7D0;cursor:pointer;}
+input[type="text"],input[type="password"]{border-width:1px;border-style:solid;border-color:#707070 #CECECE #CECECE #707070;padding:2px 4px;height:18px;line-height:18px;vertical-align:middle;}
+input[type="text"]:focus,input[type="password"]:focus{border-color:#A5C760;color:#333;-moz-box-shadow:0 0 3px #A5C760;-webkit-box-shadow:0 0 3px #A5C760;box-shadow:0 0 3px #A5C760;outline:none ;}
+.alltxt{height:18px;line-height:18px;padding:3px 3px 2px 3px;vertical-align:middle;border-width:1px;border-style:solid;border-color:#707070 #CECECE #CECECE #707070;}
+textarea{background:url(../images/input.png) #fff repeat-x scroll 0px 0px;border-width:1px;border-style:solid;border-color:#707070 #CECECE #CECECE #707070;padding:2px 4px;vertical-align:middle;line-height:16px;overflow:auto;}
+textarea:focus{border-color:#A5C760;color:#333;-moz-box-shadow:0 0 3px #A5C760;-webkit-box-shadow:0 0 3px #A5C760;box-shadow:0 0 3px #A5C760;}h1{color:#171B16;font-size:130%;font-weight:bold;}h2{color:#171B16;font-size:115%;font-weight:bold;}
+h3{color:#171B16;font-size:100%;font-weight:bold;}
+
+#login-box{
+	border:5px solid #eee;
+	width:350px;
+	margin:150px auto 0 auto;
+	padding:0 30px;}
+.login-top{
+	height:48px;
+	line-height:48px;
+	text-align:left;
+	border-bottom:3px solid red;
+	}
+.login-top a{
+	color:#666;}
+.login-top a:hover{
+	color:#333;text-decoration:underline;}
+.login-main{
+	height:160px;
+	margin-top:10px;}
+.login-main dl{width:300px;}
+.login-main dl dt,.login-main dl dd{
+	float:left;
+	height:30px;
+	line-height:30px;
+	display:inline-block;
+	margin-top:5px;}
+.login-main dl dt{
+	width:90px;
+	text-align:right;
+	font-size:14px;
+	font-weight:bold;
+	color:#333;
+	padding-right:5px;}
+.login-main dl dd{}
+.login-main dl dd input#vdcode{width:50px;margin-right:5px;}
+.login-main  .login-btn{background:url(../images/login-btn.jpg) no-repeat;
+	width:84px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	font-size:14px;
+	font-weight:bold;
+	color:#fff;
+	border:none;
+	margin-top:5px;
+	cursor:pointer;}
+.login-power{font:11px Tahoma,Helvetica,Arial,sans-serif;
+	height:25px;
+	line-height:25px;
+	text-align:right;
+	color:#999;
+	margin-top:5px;}
+.login-power strong{color:#669900;}
+.login-power  a{margin:0 3px;color:#256EB1;}
+.login-power  a:hover{text-decoration:underline;color:#1A4A77;}
+
+#main-div{
+	border:5px solid #eee;
+	width:570px;
+	margin:150px auto 0 auto;
+	background:url(../images/allbg.gif);
+	padding:0 30px;}
+
+th {
+	background-color:#fbfce2;
+	height:28px;
+	text-align:left;
+	font-weight:bold;
+}
+
+td {
+	background-color:#ffffff;
+	height:28px;
+	padding-left:5px;
+}
+
+
+.table_header {
+	background-color:gray;
+	border-bottom:5px solid red;
+	color:white;
+	font-weight:bold;
+	height:28;
+}
+
+div.pagination {
+	padding: 3px;
+	margin: 3px;
+}
+
+div.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #AAAADD;
+	
+	text-decoration: none; /* no underline */
+	color: #000099;
+}
+div.pagination a:hover, div.pagination a:active {
+	border: 1px solid #000099;
+
+	color: #000;
+}
+div.pagination span.current {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+		border: 1px solid #000099;
+		
+		font-weight: bold;
+		background-color: #000099;
+		color: #FFF;
+	}
+div.pagination span.disabled {
+		padding: 2px 5px 2px 5px;
+		margin: 2px;
+		border: 1px solid #EEE;
+	
+		color: #DDD;
+}
+
+.select {
+	color:blue;
+	cursor:pointer;
+	text-decoration:underline ;
+}

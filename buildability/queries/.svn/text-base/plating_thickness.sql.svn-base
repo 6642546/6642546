@@ -1,0 +1,9 @@
+SELECT DESCRIPTION, 
+       ID,
+       SURFACE_CU,
+       SURFACE_NI,
+       SURFACE_SN,
+       SURFACE_AU
+    FROM MASTER_PLATING_THICKNESS 
+   WHERE PROCESS_TYPE IN @@replace_str@@
+           AND STATUS <> 'O'

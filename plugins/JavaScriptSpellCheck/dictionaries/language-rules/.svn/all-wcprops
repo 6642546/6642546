@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/repos/inplan/!svn/ver/676/feeweb/plugins/JavaScriptSpellCheck/dictionaries/language-rules
+END
+banned-words.txt
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/repos/inplan/!svn/ver/676/feeweb/plugins/JavaScriptSpellCheck/dictionaries/language-rules/banned-words.txt
+END
+common-mistakes.txt
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/repos/inplan/!svn/ver/676/feeweb/plugins/JavaScriptSpellCheck/dictionaries/language-rules/common-mistakes.txt
+END
+enforced-corrections.txt
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/repos/inplan/!svn/ver/676/feeweb/plugins/JavaScriptSpellCheck/dictionaries/language-rules/enforced-corrections.txt
+END

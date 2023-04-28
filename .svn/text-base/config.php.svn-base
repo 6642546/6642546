@@ -1,0 +1,13 @@
+<?php
+	$defaultSite = 'GZ';
+	$webaddress = 'http://localhost/feeweb/index.php';
+
+	//config site web server here:
+	$server_HY = 'aphyweb2';
+	$server_HZ = 'aphyweb2';
+	$server_FG = 'cat03';
+	$server_SJ = 'cat03';
+	$server_GZ = 'apguweb1';
+	$server_ZS = 'apguweb1';
+
+?>

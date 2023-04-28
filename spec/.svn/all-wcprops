@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/repos/inplan/!svn/ver/604/feeweb/spec
+END
+getspec.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/repos/inplan/!svn/ver/373/feeweb/spec/getspec.php
+END
+getlist.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/repos/inplan/!svn/ver/604/feeweb/spec/getlist.php
+END
+showspec.php
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/repos/inplan/!svn/ver/596/feeweb/spec/showspec.php
+END
+search.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/repos/inplan/!svn/ver/596/feeweb/spec/search.php
+END

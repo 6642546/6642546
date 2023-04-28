@@ -1,0 +1,594 @@
+<html>
+<?php 
+	if (file_exists("oracle_conn.php")){
+		$pre_dir_scripts = "scripts";
+		$pre_dir = "inplan/hy/stackup";
+		$logo_dir = "images";
+		if (!$conn) require("oracle_conn.php");
+	
+	} else {
+		$pre_dir_scripts = "../../scripts";
+		$pre_dir = "stackup";
+		$logo_dir = "stackup";
+		if (!$conn) require("../../oracle_conn.php");
+		echo "<script type='text/javascript' src='". $pre_dir_scripts . "/jquery-1.4.4.min.js'></script>";
+	}
+	echo "<script type='text/javascript' src='". $pre_dir . "/stackup.js'></script>";
+?>
+
+
+
+<style>
+	<!-- 
+		.header {
+			width:760px;
+			font: 12px/17px times,Arial,sans-serif;
+		}
+		img_ { 
+			-webkit-transform-origin:top left; 
+			-webkit-transform:scale(0.5); 
+			-moz-transform-origin:top left; 
+			-moz-transform:scale(0.5);
+			zoom:0.5;
+			} 	
+			
+		tr {
+			font-size:12px;
+		
+		}
+
+		td {
+			padding-left:5px;
+			
+		
+		}
+
+		th {
+			font-weight:bold;
+			text-align:left;
+		}
+
+		.drill {
+			position: absolute; 
+			width:4px;
+			left: 0px; top: 0px ;
+			display:none;
+			z-index:3;
+		}
+		.div_drill{
+			position: absolute; left: 0px; top: 0px ;
+			width:100%;
+			height:100%;
+			z-index:2;
+		}
+
+		.div_prepreg{
+			position: absolute;
+			background-image:url(<?php echo $pre_dir ?>/prepreg/prepreg_back.png);
+			width:148px;
+			_width:150px;
+			height:100%;
+			z-index:1;
+			border:solid 1px black;
+		}
+
+		#drill_imp{
+			padding-top:20px;
+		}
+
+		#imp_table td{
+			border:solid 1px black;
+		
+		}
+
+		#stackup_table td{
+			text-align:left;
+		}
+
+		#stackup_table img{
+			position: relative;
+			z-index:2;
+		}
+
+		#drill_thk td {
+			text-align:left;
+		}
+
+		#imp_table th{
+			border:solid 1px black;
+		
+		}
+		
+		#setting_table td {
+			border:solid 1px black;
+			text-align:left;
+			
+		}
+
+		#setting_table th {
+			border:solid 1px black;
+		}
+
+
+		/* loading mask */
+		.loadmask {
+			z-index: 100;
+			position: absolute;
+			top:0;
+			left:0;
+			-moz-opacity: 0.5;
+			opacity: .50;
+			filter: alpha(opacity=50);
+			background-color: #CCC;
+			width: 100%;
+			height: 100%;
+			zoom: 1;
+		}
+		.loadmask-msg {
+			z-index: 20001;
+			position: absolute;
+			top: 0;
+			left: 0;
+		   /* border:1px solid #6593cf;*/
+			background:#ccc;
+		}
+		.loadmask-msg div {
+			padding:12px 5px 10px 30px;
+			background: #fff url('images/loading.gif') no-repeat 5px 12px;
+			line-height: 16px;
+			border:2px solid #6593CF;
+			color:#222;
+		   /* font:normal 11px tahoma, arial, helvetica, sans-serif;*/
+			cursor:wait;
+		}
+		.masked {
+			overflow: hidden !important;
+		}
+		.masked-relative {
+			position: relative !important;
+		}
+		.masked-hidden {
+			visibility: hidden !important;
+		}
+			
+			-->
+</style>
+<div style="padding:5px;">
+<?php 
+//$job = "66602";
+//$schema = "us_dev.";
+//$name = "report";
+//$password = "rpt";
+//include_once("dbconnect.php");
+$site = $_GET['site'];
+$job =  $_GET["job_name"];
+
+$core_rd = $_GET["corerd"];
+
+$pp_fn = $_GET["pp_fn"];
+$pp_rs = $_GET["pp_rs"];
+
+$erp = $_GET["erp"];
+$tg = $_GET["tg"];
+$dk = $_GET["dk"];
+
+if ($erp) $erp_title = "ERP Code";
+if ($tg) $tg_title= "TG";
+if ($dk) $dk_title= "DK";
+
+$tg_w = 100;
+$dk_w = 100;
+
+if ($core_rd) { $tg_w= 30; $dk_w= 30; }
+if ($erp) {$erp_w = 60;$tg_w=0; $dk_w=0;}
+if ($tg) $tg_w= 30;
+if ($dk) $dk_w= 30;
+
+
+$html2pdf = $_GET['html2pdf'];
+
+$mat_erp = "";
+$pp = "";
+$pp_dk = "";
+$pp_tg = "";
+$pp_family = "";
+$pp_over_thk =0;
+$pp_press_thk=0;
+$thick_over_lam = 0;
+$add_core_thick = 1;
+$add_pp_thick = 1;
+$add_foil_thick = 1;
+$out_foil_thick = 0;
+$loop_index = 0;
+
+
+
+$job_query = "select i.item_name
+				,job.mrp_name
+				,part.name
+				,users.user_name
+				,TC.TARGET_THICKNESS
+				,job.num_layers
+				,pd.lam_thickness_,
+				pd.lam_thickness_min_,
+				pd.lam_thickness_max_   
+				,STACKUP.CUSTOMER_THICKNESS
+				,STACKUP.CUSTOMER_THICKNESS_TOL_PLUS
+				,STACKUP.CUSTOMER_THICKNESS_TOL_MINUS
+				,(select ev.value from enum_values ev,enum_types et where ev.enum_type=et.enum_type 
+        and et.type_name='THICKNESS_CALC_METHOD_' and ev.enum=job_da.REQ_THICKNESS_CALC_METHOD_) as \"Calc Method\"
+			from items i
+				,job
+				,items ist
+				,THICKNESS_CONSTRAINT tc
+				,items ipr
+				,process p
+				,process_da pd
+				,stackup
+				,items istackup
+				,users
+				,part
+				,job_da
+			where i.item_type=2
+			and i.item_id=job.item_id
+			and job.revision_id=i.last_checked_in_rev
+			and i.root_id=ist.root_id
+			and ist.item_id=tc.item_id
+			and tc.revision_id=ist.last_checked_in_rev
+			and IST.DELETED_IN_GRAPH is null
+			and TC.WHOLE_STACKUP=1
+			and ipr.root_id=i.root_id
+			and ipr.item_id=p.item_id
+			and p.revision_id=ipr.last_checked_in_rev
+			and ipr.deleted_in_graph is null
+			and P.PROC_SUBTYPE=29
+			and p.item_id=pd.item_id
+			and p.revision_id=pd.revision_id
+			and i.root_id=ISTACKUP.ROOT_ID
+			and istackup.item_id=stackup.item_id
+			and stackup.revision_id=ISTACKUP.LAST_CHECKED_IN_REV
+			and istackup.deleted_in_graph is null
+			and job_da.item_id=job.item_id
+			and job.revision_id=job_da.revision_id
+			and job.item_id=part.item_id
+			and job.revision_id=part.revision_id
+			and job.assigned_operator_id=users.user_id
+			and i.item_name='$job'";
+
+$rsJob= oci_parse($conn, $job_query);
+oci_execute($rsJob, OCI_DEFAULT);
+oci_fetch($rsJob);
+
+$customer_thickness = "";
+if(oci_result($rsJob, 11) == oci_result($rsJob, 12)) {
+	$customer_thickness = sprintf("%.2f",oci_result($rsJob, 10)) . " +/- " . sprintf("%.2f",oci_result($rsJob, 11)) . " mil (" . oci_result($rsJob, 13). ")" ;
+} else {
+	$customer_thickness = sprintf("%.2f",oci_result($rsJob, 10)) . " +" . sprintf("%.2f",oci_result($rsJob, 11)) . "/-" . sprintf("%.2f",oci_result($rsJob, 12)) . " mil (" . oci_result($rsJob, 13). ")" ;
+}
+
+$pressed_thickness = sprintf("%.2f",oci_result($rsJob, 8)) . " --- " . sprintf("%.2f",oci_result($rsJob, 9)) . " mil(".sprintf("%.2f",oci_result($rsJob, 5))." mil)";
+
+
+
+echo "<center><div class='header'>
+		<div id ='html2pdf' style='display:none;'>$html2pdf</div>
+		<div>
+		<table id='setting_table' width='100%' style='border-collapse:collapse;border:solid 2px black;'>
+			<tr><th colspan=2 style='text-align:center;border-bottom:solid 1px black;'>Report Settings</th></tr>
+			<tr><td width='20%'>Laminate Description Feild</td><td width='80%'>
+				<input type=checkbox id='core_rd' $core_rd><label for=core_rd>Mrp Rev Description</label></input>
+			</td></tr>
+			<tr><td>Prepreg Description Feild</td><td>
+				<input type=checkbox id='pp_fn' $pp_fn><label for=pp_fn>Family Name</label></input>
+				<input type=checkbox id='pp_rs' $pp_rs><label for=pp_rs>Resin %</label></input>
+			</td></tr>
+			<tr><td>Common Feilds</td><td>
+			    <input type=checkbox id='erp' $erp><label for=erp>ERP Code</label></input>
+				<input type=checkbox id='tg' $tg><label for=tg>TG</label></input>
+				<input type=checkbox id='dk' $dk><label for=dk>DK</label></input>
+				<input type=button value='Refresh' id='refresh'></input>
+			</td></tr>
+		</table>
+		</div><br/>
+		
+		<table width='100%'>
+			<tr><td style='background: url($logo_dir/logo.gif) no-repeat;height:65px;'>&nbsp</td><td colspan=3 style='text-align:left;'><b style='padding-left:80px;'><font size=+2>Stackup Report</font></b></td></tr>
+			<tr><td><font size=+0.5>Tooling Number:</font></td><td><font size=+0.5><u id='part_number'>$job</u></font></td><td><font size=+0.5>Customer P/N:</font></td><td><font size=+1><u>".oci_result($rsJob, 3)."</u></font></td></tr>
+			<tr><td><font size=+1>Mrp Name:</font></td><td><font size=+0.5><u>".oci_result($rsJob, 2)."</u></font></td><td><font size=+0.5>Contact:</font></td><td><font size=+1><u>".ucwords(strtolower(oci_result($rsJob, 4)))."</u></font></td></tr>
+			<tr><td></td><td>Customer Thinkness:</td><td style='text-align:left'>".$customer_thickness."</td><td></td></tr>
+			<tr><td></td><td>Pressed Thinkness:</td><td style='text-align:left'>$pressed_thickness</td><td></td></tr>
+		</table>
+	  <br>
+	
+      <table id='stackup_table' cellpadding=0 colspacing=0 style='border-collapse:collapse'>";
+	include("stackup_query.php");
+	//echo $sqlStk;
+	
+	$rsStk = oci_parse($conn, $sqlStk);
+	oci_execute($rsStk, OCI_DEFAULT);
+	$th = "<tr><th>Layer &nbsp </th><th>Cu <br/> Thick &nbsp <br/> (mils)</th><th>Cu Foil<br/>wt &nbsp  (oz)</th><th></th>";
+	if(!$erp) {
+		$th .="<th>Cu% </th><th>Org &nbsp  &nbsp <br/>Thk <br/>(mils)</th><th>Fin <br/>Thk <br/>(mils)</th>";
+	}
+	echo $th. "<th> &nbsp Description</th><th style='width:$erp_w px;'> &nbsp $erp_title</th><th style='width:$tg_w px;'>&nbsp &nbsp  $tg_title</th><th style='width:$dk_w px;'> &nbsp &nbsp  $dk_title</th></tr>";
+	
+	while(oci_fetch($rsStk)){
+		if ($loop_index ==0) {
+			$out_foil_thick = oci_result($rsStk, 11) * 2;
+			$loop_index +=1;
+		}
+		if(oci_result($rsStk, 4) === 'foil'){
+			if (!$erp){
+				if ($pp){
+					$pp_desc = "Prepreg ". $pp ;
+					if ($pp_fn){
+						$pp_desc = "Prepreg ".$pp_family." ". $pp ;
+					}
+					
+					 echo "<tr><td>&nbsp </td><td> &nbsp </td><td>&nbsp </td><td><div class='prepreg_bg'></div></td><td style='background-color:#CEFFCE;'></td><td style='background-color:#CEFFCE;'>".$pp_over_thk."</td><td style='background-color:#CEFFCE;'>".$pp_press_thk."</td><td style='background-color:#CEFFCE;'>" .$pp_desc . "</td><td style='background-color:#CEFFCE;'></td><td style='background-color:#CEFFCE;'>&nbsp  $pp_tg</td><td style='background-color:#CEFFCE;'>&nbsp  $pp_dk</td></tr>";
+					 $pp = "";
+				}
+			}
+
+			//eval foil description here:
+			$foil_desc = oci_result($rsStk, 3);
+			if ($core_rd){
+				$foil_desc = oci_result($rsStk, 3);
+			} else {
+				$foil_desc = oci_result($rsStk, 15);
+			}
+
+			if ($erp) $mat_erp = oci_result($rsStk, 2);
+
+			$segType = "$pre_dir/foil/" . oci_result($rsStk, 9) . "_msk_" . oci_result($rsStk, 12) . ".GIF";
+                        $tmpTop = oci_result($rsStk, 6);
+                        $tmpCuTop = sprintf("%.2f",   oci_result($rsStk, 10));
+						$foil_td = "<tr><td style='background-color:#FFFFB9;' id='layer_$tmpTop'>$tmpTop</td><td style='background-color:#FFFFB9;'><center>".sprintf("%.2f",oci_result($rsStk, 11))."</center></td><td style='background-color:#FFFFB9;'><center>$tmpCuTop oz</center></td><td><img id=img_$tmpTop src='$segType' /></td>";
+						if(!$erp) {
+							$foil_td .="<td style='background-color:#FFFFB9;'>".oci_result($rsStk, 22)."</td><td style='background-color:#FFFFB9;'>".sprintf("%.2f",oci_result($rsStk, 20))."</td><td style='background-color:#FFFFB9;'></td>";
+						}
+                        echo $foil_td ."<td style='background-color:#FFFFB9;'> " . $foil_desc . "</td><td style='background-color:#FFFFB9;'> " . $mat_erp . "</td><td style='background-color:#FFFFB9;'></td><td style='background-color:#FFFFB9;'></td></tr>";
+			if ($add_foil_thick ==1 ) {
+				$thick_over_lam +=oci_result($rsStk, 11);
+				$add_foil_thick = 0;
+			}
+			$add_core_thick = 1;
+			$add_pp_thick = 1;
+		}
+		elseif(oci_result($rsStk, 4) === 'core'){
+			if ($add_core_thick ==1 ) {
+				$thick_over_lam +=oci_result($rsStk, 7);
+				$add_core_thick = 0;
+			} 
+			$add_pp_thick = 1;
+			$add_foil_thick = 1;
+
+			if ($tg) $core_tg = oci_result($rsStk, 18);
+			if ($dk) $core_dk = oci_result($rsStk, 19);
+			if ($erp) $mat_erp = trim(oci_result($rsStk, 2));
+			if (!$erp){
+				if ($pp){
+					$pp_desc = "Prepreg ". $pp ;
+					if ($pp_fn){
+						$pp_desc = "Prepreg ".oci_result($rsStk, 17)." ". $pp ;
+					}
+					
+					 echo "<tr><td>&nbsp </td><td> &nbsp </td><td>&nbsp </td><td><div class='prepreg_bg'> &nbsp </div></td><td style='background-color:#CEFFCE;'></td><td style='background-color:#CEFFCE;'>".$pp_over_thk."</td><td style='background-color:#CEFFCE;'>".$pp_press_thk."</td><td style='background-color:#CEFFCE;'>" .$pp_desc . "</td><td style='background-color:#CEFFCE;'>" .$mat_erp . "</td><td style='background-color:#CEFFCE;'>&nbsp  $pp_tg</td><td style='background-color:#CEFFCE;'>&nbsp  $pp_dk</td></tr>";
+					 $pp = "";
+				}
+			}
+
+			//eval core description here:
+			$core_desc = oci_result($rsStk, 3);
+			if ($core_rd){
+				$core_desc = oci_result($rsStk, 3);
+			} else {
+				$core_desc = oci_result($rsStk, 15);
+			}
+
+
+
+
+                        $tmpTop = " ";
+                        $tmpBot = " ";
+                        $tmpCuTop = " ";
+                        $tmpCuBot = " ";
+						$tmptoptoal = " ";
+						$tmpbottoal = " ";
+						$cuUsageTop = " ";
+						$cuUsageBot = " ";
+			if(oci_result($rsStk, 5)=== "Both"){
+				$tmpdescription = oci_result($rsStk, 9);
+                                $tmpTop = oci_result($rsStk, 6);
+                                $tmpCuTop = sprintf("%.2f",oci_result($rsStk, 10))." oz";
+								$tmptoptoal = sprintf("%.2f",oci_result($rsStk, 11));
+								$thick_over_lam +=oci_result($rsStk, 11);
+								$cuUsageTop = oci_result($rsStk, 22);
+				if(oci_fetch($rsStk)){
+					$segType = "$pre_dir/core/" . $tmpdescription . "_" . oci_result($rsStk, 9) . "_core.GIF";
+                                        $tmpBot = oci_result($rsStk, 6);
+                                        $tmpCuBot = sprintf("%.2f",oci_result($rsStk, 10))." oz";
+										$tmpbottoal = sprintf("%.2f",oci_result($rsStk, 11));
+										$thick_over_lam +=oci_result($rsStk, 11);
+										$cuUsageBot = oci_result($rsStk, 22);
+				}
+			}
+			elseif(oci_result($rsStk, 5)=== "Top"){
+				$segType = "$pre_dir/core/" . oci_result($rsStk, 9) . "_" . oci_result($rsStk, 12) . "_core.GIF";
+                                $tmpTop = oci_result($rsStk, 6);
+                                $tmpCuTop = sprintf("%.2f",oci_result($rsStk, 10))." oz";
+								$tmptoptoal = sprintf("%.2f",oci_result($rsStk, 11));
+								$thick_over_lam +=oci_result($rsStk, 11);
+								$tmpBot =" &nbsp";
+								$cuUsageTop = oci_result($rsStk, 22);
+			}
+			elseif(oci_result($rsStk, 5)=== "Bottom"){
+				$segType = "$pre_dir/core/" . oci_result($rsStk, 9) . "_" . oci_result($rsStk, 12) . "_core.GIF";
+                                $tmpBot = oci_result($rsStk, 6);
+                                $tmpCuBot = sprintf("%.2f",oci_result($rsStk, 10))." oz";
+								$tmpbottoal = sprintf("%.2f",oci_result($rsStk, 11));
+								$thick_over_lam +=oci_result($rsStk, 11);
+								$tmpTop = " &nbsp";
+								$cuUsageBot = oci_result($rsStk, 22);
+			}
+			else{
+				$segType = "$pre_dir/core/core.GIF";
+				$tmpBot =" &nbsp";
+                $tmpCuBot = " &nbsp";
+				$tmpCuTop=" &nbsp";
+				$tmptoal = " &nbsp";
+				$tmpTop = " &nbsp";
+				$cuUsageTop = " &nbsp";
+				$cuUsageBot = " &nbsp";
+			}
+						$core_td = "<tr><td style='background-color:#FFFFB9;' id='layer_$tmpTop'>$tmpTop</td><td style='background-color:#FFFFB9;'><center>".$tmptoptoal."</center></td><td style='background-color:#FFFFB9;'><center>$tmpCuTop</center></td><td rowspan=3><img id='img_$tmpTop' src='$segType' /></td><td>".$cuUsageTop."</td><td></td><td> </td><td> </td><td></td></tr>
+                              <tr><td> </td><td> </td><td> </td>";
+							  if(!$erp) {
+								  $core_td .= "<td style='background-color:#CEFFCE;'></td><td style='background-color:#CEFFCE;'>".sprintf("%.2f",oci_result($rsStk, 7))."</td><td style='background-color:#CEFFCE;'></td>";
+							  }
+						$core_td .= "<td style='background-color:#CEFFCE;'>" . $core_desc . "</td><td style='background-color:#CEFFCE;'>$mat_erp</td><td style='background-color:#CEFFCE;'>&nbsp $core_tg</td><td style='background-color:#CEFFCE;'>&nbsp $core_dk</td></tr>
+                              <tr><td style='background-color:#FFFFB9;' id='layer_$tmpBot'>$tmpBot</td><td style='background-color:#FFFFB9;'><center>".$tmpbottoal."</center></td><td style='background-color:#FFFFB9;'><center>$tmpCuBot</center></td><td>".$cuUsageBot."</td><td> </td><td></td><td></td><td></td>";
+							if(!$erp) {
+								$core_td .="<td></td><td></td>";
+							}
+                        echo $core_td. "</tr>";
+		}
+		else{
+			
+			
+			if ($pp){
+				if ($pp_rs){
+					$pp .= "/" . oci_result($rsStk, 15)."(".oci_result($rsStk, 16).")";
+				} else 	$pp .= "/" . oci_result($rsStk, 15);
+			}  else {
+				if ($pp_rs){
+					$pp = oci_result($rsStk, 15)."(".oci_result($rsStk, 16).")";
+				} else {
+					$pp = oci_result($rsStk, 15);
+				}
+			
+			}
+
+			if ($add_pp_thick ==1 ) {
+				$thick_over_lam +=oci_result($rsStk, 8);
+				$add_pp_thick = 0;
+			} 
+			
+			$add_core_thick = 1;
+			$add_foil_thick = 1;
+
+			$pp_family = oci_result($rsStk, 17);
+			$pp_over_thk = sprintf("%.2f",oci_result($rsStk, 20));
+			$pp_press_thk = sprintf("%.2f",oci_result($rsStk, 21));
+			if ($tg) { 
+				$pp_tg = oci_result($rsStk, 18);
+			 } else {$pp_tg = '';}
+			if ($dk) { 
+				$pp_dk = oci_result($rsStk, 19);
+			} else {$pp_dk = '';}
+
+			if ($erp){
+				$mat_erp = oci_result($rsStk, 2);
+				echo "<tr><td>&nbsp </td><td> &nbsp </td><td>&nbsp </td><td></td><td style='background-color:#CEFFCE;'>" .oci_result($rsStk, 3) . "</td><td style='background-color:#CEFFCE;'>" .$mat_erp . "</td><td style='background-color:#CEFFCE;'>&nbsp  $pp_tg</td><td style='background-color:#CEFFCE;'>&nbsp  $pp_dk</td></tr>";
+			}
+		}
+	}
+
+	echo '</table>';
+
+	// get drill information:
+	$sql = "select i.item_name
+			,DP.START_INDEX
+			,DP.END_INDEX
+			,(select ev.value from enum_values ev,enum_types et where ev.enum_type=et.enum_type
+                and et.type_name='PLATE_TYPE' and EV.ENUM=DP.PLATE_TYPE ) DRILL_TYPE
+			,DPD.EPOXY_FILL_
+		from items i
+			,items idp
+			,drill_program dp
+			,drill_program_da dpd
+		where i.item_type=2
+		and i.root_id=idp.root_id
+		and idp.item_id=dp.item_id
+		and dp.revision_id=idp.last_checked_in_rev
+		and IDP.DELETED_IN_GRAPH is null
+		and dp.item_id=dpd.item_id
+        and dp.revision_id=dpd.revision_id
+		and i.item_name='$job'";
+		$rsDrill = oci_parse($conn, $sql);
+		oci_execute($rsDrill, OCI_DEFAULT);
+		//echo '<div class="div_drill">';
+		$drill_index = 1;
+		
+		$drill_text = "";
+			while(oci_fetch($rsDrill)){
+				echo "<img id='drill_$drill_index' class='drill' src='$pre_dir/drill.png' start_layer='".oci_result($rsDrill, 2)."' end_layer='".oci_result($rsDrill, 3)."'/>";
+				$drill_index+=1;
+				if (oci_result($rsDrill, 5) == 1000) {$viafill="--";} else {$viafill="Yes";}
+				$drill_text .="<tr><td>".oci_result($rsDrill, 2) ." - ".oci_result($rsDrill, 3)."</td><td>".oci_result($rsDrill, 4)."</td><td>".$viafill."</td></tr>";
+			}
+		//echo '</div>';
+?>
+
+<div class="div_prepreg"></div>
+<div id="drill_imp">
+<table id="drill_thk" width='100%'>
+	<tr><td width='60%'>
+		<table width='100%'><tr>
+			<th>Layers</th><th>Drill Type</th><th>Via Fill</th></tr>
+				<?php
+					echo $drill_text;
+				?>
+			</table>
+	</td><td width='40%'>
+		<table width='100%'>
+		<tr><td><?php echo sprintf("%.2f",$thick_over_lam - $out_foil_thick) ?></td><td>Thickness over Laminate</td></tr>
+		<tr><td><?php echo sprintf("%.2f",$thick_over_lam) ?></td><td>Thickness over Copper</td></tr>
+		<tr><td><?php echo sprintf("%.2f",$thick_over_lam + 1) ?></td><td>Thickness over Soldermask</td></tr>
+		</table>
+	</td></tr>
+</table>
+
+<div>
+<table id="imp_table" border=1 width='100%' style='border-collapse:collapse;border:solid 2px black;'>
+<tr><th style="text-align:center;border-bottom:solid 2px black;" colspan=11><font size=+1><Strong>Impedance Table</Strong></font></th></tr>
+<tr><th>Layer</th><th>Structure Type</th><th>Coated<br/>Microstrip</th><th>Target<br/>Impedance<br/>(ohms)</th><th>Impedance<br/>Tolerance<br/>(ohms)</th>
+<th>Target<br/>Linewidth<br/>(mils)</th><th>Edge<br/>Coupled<br/>Pitch *<br/>(mils)</th><th>Reference<br/>Layers</th><th>Modelled<br/>Linewidth<br/> (mils)</th><th>Modelled <br/>Impedance<br/>(ohms)</th><th>CoPlaner<br/>Space<br/>(mils)</th></tr>
+
+<?php
+	include("impedance_query.php");
+	$rsImp = oci_parse($conn, $imp_query);
+	oci_execute($rsImp, OCI_DEFAULT);
+	while(oci_fetch($rsImp)){
+		$ref_layer = "";
+		if (oci_result($rsImp, 10) && oci_result($rsImp, 11)){
+			$ref_layer = "(".oci_result($rsImp, 10).", ".oci_result($rsImp, 11).")";
+		} else if (oci_result($rsImp, 10)){
+			$ref_layer = "(".oci_result($rsImp, 10).")";
+		} else if (oci_result($rsImp, 11)){
+			$ref_layer = "(".oci_result($rsImp, 11).")";
+		}
+
+		$module = ucwords(strtolower(str_ireplace('_',' ',oci_result($rsImp, 2))));
+
+		$coated = "---";
+		if ((oci_result($rsImp, 3) == 1 || oci_result($rsImp, 3) == oci_result($rsImp, 12))  && strpos(oci_result($rsImp, 2),'uncoated')==false ) $coated ="Yes";
+
+		$pitch = sprintf("%.2f",oci_result($rsImp, 13));
+
+		$coplanar_space = sprintf("%.2f",oci_result($rsImp, 14));
+		echo "<tr><td  align=center>".oci_result($rsImp, 3)."</td><td>".$module."</td><td align=center>".$coated."</td><td align=center>".sprintf("%.2f",oci_result($rsImp, 4))."</td><td  align=center>"."+/-".oci_result($rsImp, 5)."</td><td align=center>".sprintf("%.2f",oci_result($rsImp, 7))."</td><td align=center>$pitch</td><td align=center>".$ref_layer."</td><td  align=center>".sprintf("%.2f",oci_result($rsImp, 9))."</td><td  align=center>".sprintf("%.2f",oci_result($rsImp, 8))."</td><td  align=center>$coplanar_space</td></tr>";
+
+	}
+	if (!$ref_layer) {
+		echo "<tr><td colspan=11 align=center style='color:red;'>No impedance information for this job.</td></tr>";
+	}
+?>
+</table>
+<p style="font-size:12px;">* &nbsp Edge Coupled Pitch is measured from the center line of one differential trace to the center line of the other.</p>
+</div>
+</div>
+</div></center>
+</div>
+
+</html>

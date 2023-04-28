@@ -1,0 +1,60 @@
+.icon-add{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -198px;
+}
+.icon-edit{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -594px;
+}
+.icon-remove{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -264px;
+}
+.icon-save{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -330px;
+}
+.icon-cut{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -132px;
+}
+.icon-ok{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -528px;
+}
+.icon-no{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -462px;
+}
+.icon-cancel{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -66px;
+}
+.icon-reload{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -792px;
+}
+.icon-search{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -858px;
+}
+.icon-print{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -660px;
+}
+.icon-help{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -396px;
+}
+.icon-undo{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -924px;
+}
+.icon-redo{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 -792px;
+}
+.icon-back{
+	background:url('icons/all.png') no-repeat;
+	background-position: 0 0;
+}

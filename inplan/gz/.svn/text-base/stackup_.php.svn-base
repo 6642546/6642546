@@ -1,0 +1,43 @@
+<?php
+$site = $_GET['site'];
+$job_name = $_GET["job_name"];
+require("oracle_conn.php");
+
+$query = "select i.item_name
+					,lob.description
+					,lob.format
+					,lob.blob_data
+			from items i
+					,items ilob
+					,rev_controlled_lob lob
+					,snap_note
+			where i.item_type=2
+					and i.root_id=ilob.root_id
+					and ilob.deleted_in_graph is null
+					and ilob.item_id=snap_note.item_id
+					and snap_note.revision_id=ilob.last_checked_in_rev
+					and snap_note.ANNOTATED_PICTURE=lob.lob_id
+					and i.item_name='$job_name'
+					and lob.DESCRIPTION like '%Stackup%'";
+
+$stid = oci_parse($conn, $query);
+if (!$stid) {
+  $e = oci_error($conn);
+  print htmlentities($e['message']);
+  exit;
+}
+
+$r = oci_execute($stid, OCI_DEFAULT);
+if(!$r) {
+  $e = oci_error($stid);
+  echo htmlentities($e['message']);
+  exit;
+}
+$i = 0;
+$ncols = oci_num_fields($stid );
+while($row = oci_fetch_array($stid, OCI_RETURN_NULLS)) {
+	header("Content-type: image/pjpeg"); 
+	echo $row['BLOB_DATA']->load();
+} 
+
+?>

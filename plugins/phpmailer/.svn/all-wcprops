@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/repos/inplan/!svn/ver/290/feeweb/plugins/phpmailer
+END
+class.phpmailer.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/repos/inplan/!svn/ver/290/feeweb/plugins/phpmailer/class.phpmailer.php
+END
+class.pop3.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/repos/inplan/!svn/ver/290/feeweb/plugins/phpmailer/class.pop3.php
+END
+class.smtp.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/repos/inplan/!svn/ver/290/feeweb/plugins/phpmailer/class.smtp.php
+END

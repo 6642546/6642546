@@ -1,0 +1,361 @@
+<?php
+	require "config.php";
+	require "lang.php";
+	$lifeTime = 240 * 3600; 
+	session_set_cookie_params($lifeTime); 
+	session_start();
+	$site = $_GET["site"];
+	$action = $_GET["action"];
+	$spec_name = $_GET["spec_name"];
+	$job_name = $_GET["job_name"];
+	$part_number = $_GET["part_number"];
+	$t_code = $_GET["t_code"];
+	$html2pdf = $_GET["html2pdf"];
+	$search_area = $_GET["search_area"]; // for global search;
+	$global_kw = $_GET["global_kw"];
+
+	$lang = $_GET["lang"];
+
+	if (!$site) {$site = $defaultSite;}
+	if ($_SESSION['buildlogin']!="ok" || $action !="buildability") {
+		$login=0;
+		$user_name = "";
+		$user_role = "";
+	} else {
+		$login=1;
+		$user_name = $_SESSION['build_userName'];
+	}
+	if ($action =="buildability"){
+		$user_role = getUserRole($user_name);
+	}
+	function getUserRole($user_name){
+		require "buildability/mysql_conn.php";
+		$my_query = "select role from users where display_name='$user_name'";
+		$req=@mysql_query($my_query,$db);	
+		$result=@mysql_fetch_array($req);
+		mysql_close($db);
+		return $result[0];
+	}
+	function GetIP(){
+	   if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+			   $ip = getenv("HTTP_CLIENT_IP");
+		   else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+			   $ip = getenv("HTTP_X_FORWARDED_FOR");
+		   else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+			   $ip = getenv("REMOTE_ADDR");
+		   else if (isset($_SERVER[’REMOTE_ADDR’]) && $_SERVER[’REMOTE_ADDR’] && strcasecmp($_SERVER[’REMOTE_ADDR’], "unknown"))
+			   $ip = $_SERVER[’REMOTE_ADDR’];
+		   else
+			   $ip = "unknown";
+	   return($ip);
+	}
+	
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>FEE WEB</title>
+<link href="styles/style.css" type="text/css" rel="Stylesheet" />
+<link href="styles/speclist.css" type="text/css" rel="Stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.4.min.js"></script>
+<!--<script type="text/javascript" src="scripts/main.js"></script> -->
+
+</head>
+<body>
+<DIV style="DISPLAY: none" id=goTopBtn><IMG border=0 src="images/detail-top.png"></DIV>
+<SCRIPT type="text/javascript">goTopEx();</SCRIPT>
+<div style="display:none;">
+	<?php 
+		echo "<div id='server_HY'>$server_HY</div>";
+		echo "<div id='server_HZ'>$server_HZ</div>";
+		echo "<div id='server_FG'>$server_FG</div>";
+		echo "<div id='server_SJ'>$server_SJ</div>";
+		echo "<div id='server_GZ'>$server_GZ</div>";
+		echo "<div id='server_ZS'>$server_ZS</div>";
+		echo "<div id='default_site'>$defaultSite</div>";
+		echo "<div id='lang_code'>$lang</div>";
+	?>
+</div>
+<div id="ContentContainer">
+<div class="container">
+<!-- Top line Begin-->
+	<div class="topnav">
+		<div class="topnavcenter">
+			<ul>
+				<li><span id="client_ip"><?php echo "IP:".GetIP();?></span>
+					<span><?php echo " Date: ".date("Y/m/d",time());?>  (<a href="readme.html" target="blank">Version:<?php echo file_get_contents("version.txt");?></a>)</span>
+					<div id='html2pdf' style="display:none;"><?php echo $html2pdf; ?></div>
+				</li>
+			</ul> 
+		</div>
+		<div class="topnavright">
+			<?php 
+				if ($login==0){
+					echo "<div class=\"login\">Login</div>";
+					echo '<div class ="Manage">
+							<a href="javascript:void(0)" id="mb1" class="easyui-menubutton" menu="#mm2"><span id="loggedUserName"></span><span id="userRole"></span></a>
+							<div id="mm2" style="width:120px;display:none;">
+							<div>Help</div>
+							<div id="about">About</div>
+							<div id="add_member">Config Member</div>
+							<div id="config_email">Config Email</div>
+							<div id="logout">Log Out</div>
+						  </div>';
+				} else {
+					//echo "<div class=\"logout\">Log Out</div>";
+					//<div class=\"loggedin\">Current User:<span id=\"loggedUserName\">".$user_name."</span></div>";	
+					//echo "<div class=\"login\">Login</div>";
+					echo '<div class = "Manage" style="display:block;">
+							<a href="javascript:void(0)" id="mb1" class="easyui-menubutton" menu="#mm2"><span id="loggedUserName">'.$user_name.'</span><span id="userRole">'.$user_role.'</span></a>
+							<div id="mm2" style="width:120px;display:none;">
+							<div>Help</div>
+							<div id="about">About</div>
+							<div id="add_member">Config Member</div>
+							<div id="config_email">Config Email</div>
+							<div id="logout">Log Out</div>
+						  </div>';
+				}
+			?>
+	</div>
+		</div>
+		
+	</div>
+<!-- Top line End-->
+
+<!-- Top Brand Begin-->
+	<div class="brand">
+		<h1 class="site-name">FEE WEB</h1>
+		<a class="site-logo" href="index.php?site=<?php echo $site?>&action=home<?php if ($lang) echo "&lang=$lang"; ?>" title="FEE WEB" rel="home"><img src="images/logo.gif" alt="" width="165" height="55" /></a>
+	</div>
+
+	<div class="ad-banner">
+		<div class="headtext">Front End Engineering Tooling Website</div>
+	</div>
+
+	<div class="ad-text">
+		<div class="site-name">
+			<h1><?php echo getLang('Current Site',$lang) ?> : <span id="site_text"><?php echo $site; ?></span></h1>
+			<div>
+			<span class="change_site"><?php echo getLang('Change Site',$lang) ?></span>&nbsp |&nbsp
+			<span class="change_lang"><?php echo getLang('Chinese',$lang) ?></span>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+	
+	</div>
+<!-- Top Brand End-->
+
+<!-- Top navigate Begin -->
+	  <div class="nav">
+		<div class="navinner">
+			<ul class="navlist">
+			<li><a href="index.php?site=<?php echo $site?>&action=home<?php if ($lang) echo "&lang=$lang"; ?>"><?php if (!$action || $action == "home") {echo "<div class=\"selected\">Home</div>";} else {echo "Home";} ?></a></li>
+			<li><a href="index.php?site=<?php echo $site?>&action=buildability<?php if ($lang) echo "&lang=$lang"; ?>" id='top_nav_b_dis_list'><?php if ($action == "buildability") {echo "<div class=\"selected\">Buildability</div>";} else {echo "Buildability";} ?></a></li>
+			<li><a href="index.php?site=<?php echo $site?>&action=spec<?php if ($lang) echo "&lang=$lang"; ?>" ><?php if ($action == "spec") {echo "<div class=\"selected\">Spec</div>";} else {echo "Spec";} ?></a></li>
+			<li><a href="index.php?site=<?php echo $site?>&action=inplan<?php if ($lang) echo "&lang=$lang"; ?>" ><?php if ($action == "inplan") {echo "<div class=\"selected\">InPlan</div>";} else {echo "InPlan";} ?></a></li>
+			<li><a href="index.php?site=<?php echo $site?>&action=tq<?php if ($lang) echo "&lang=$lang"; ?>"><?php if ($action == "tq") {echo "<div class=\"selected\">TQ</div>";} else {echo "TQ";} ?></a></li>
+			<li><a href="index.php?site=<?php echo $site?>&action=genesis<?php if ($lang) echo "&lang=$lang"; ?>"><?php if ($action == "genesis") {echo "<div class=\"selected\">Genesis</div>";} else {echo "Genesis";} ?></a></li>
+			</ul>
+		</div>  
+	  </div>
+<!-- Top navigate End -->
+
+</div>
+	<?php
+		function echo_search_bar($lang){
+			
+			echo "<table border='0' cellpadding='0' cellspacing='0' class='tab_search'>
+							<tr>
+								<td>
+									<input type='text' name='q' title='Search' class='searchinput' id='searchinput' size='10' value='- ".getLang('Quick Search',$lang)." -' onfocus=\"if(this.value=='- ".getLang('Quick Search',$lang)." -') value='';\"  onblur=\"if(this.value==''){this.value='- ".getLang('Quick Search',$lang)." -';}\"/>
+								</td>
+								<td>
+									<input type='image' width='21' height='17' class='searchaction' alt='Search' src=\"images/magglass.gif\" border='0' hspace='2'/>
+								</td>
+							</tr>
+						</table>";
+			echo "<img id='outputpdf' style='float:right;padding:5px;cursor:pointer;' src='images/pdf.png'/>";
+		
+		}
+
+
+		switch ($action)
+		{
+		   case "spec":
+			   if ($spec_name)
+				{
+					echo "<div class=\"top_link\">
+						  <a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang";
+					echo	  "\">Home</a> >> <a href=\"index.php?action=spec&site=$site";
+						  if ($lang) echo "&lang=$lang";
+					echo  "\">Search</a> >> <a
+						  href=\"index.php?site=$site&action=spec&spec_name=".$spec_name;
+						  if ($lang) echo "&lang=$lang"; 
+					echo  "\">".$spec_name."</a>
+						  </div>";
+					require "spec/showspec.php";
+				}
+				else
+				{
+					if ($site == "HY" || $site == "HZ" || $site == "SJ" || $site == "GZ"  )
+					{
+							echo "<div class=\"top_link\">
+								  <a href=\"index.php?site=$site";
+								  if ($lang) echo "&lang=$lang"; 
+							echo   "\">Home</a> >> <a href=\"index.php?site=$site&action=spec";
+								  if ($lang) echo "&lang=$lang"; 
+							echo  "\">Search</a>
+								  </div>";
+						          require "spec/search.php";
+					} else {
+							echo "<div class=\"top_link\">
+								  <a href=\"index.php?site=$site";
+								  if ($lang) echo "&lang=$lang"; 
+							echo  "\">Home</a> >>FG Customer Reference
+								  </div>";
+							echo "<div class=\"spectab\"><iframe id= \"Fg_Frame\" namd =\"Fg_Frame\" frameborder=0 src=\"http://itapps/cview/customers.htm\" width=100% height=100%</iframe></div>";					
+					}
+					
+				}
+			   
+			   break;
+			  case "inplan":
+				if ($job_name){
+					echo "<div class=\"top_link\">";
+					echo_search_bar($lang);
+					echo "<a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=inplan";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Search</a> >> <a href=\"index.php?site=$site&action=inplan&job_name=".$job_name;
+						  if ($lang) echo "&lang=$lang"; 
+						  if (isset($_GET['data'])) {echo "&data=".$_GET['data'];} else echo "&data=Job Attributes";
+						  if (isset($_GET['tq_pn']) and $_GET['tq_pn'] == 'yes') echo "&tq_pn=yes";
+						  echo "\">".$job_name."</a>";
+						  echo "</div>";
+					require "inplan/showinplan.php"; 
+			    } else
+			   {
+				
+					echo "<div class=\"top_link\">
+						  <a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=inplan";
+						  if ($lang) echo "&lang=$lang"; 
+						  if (isset($_GET['data']) and $_GET['data'] == 'TQ') echo "&data=TQ";
+						  echo "\">Search</a>
+						  </div>";
+						  require "inplan/search.php";
+				}
+				break;
+				case "tq":
+					if ($job_name){
+					echo "<div class=\"top_link\">";
+					echo_search_bar($lang);
+					echo "<a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=tq";
+						  if ($lang) echo "&lang=$lang"; 
+						  if (isset($_GET['data']) and $_GET['data'] == 'TQ') echo "&data=TQ";
+						  echo "\">Search</a> >> <a href=\"index.php?site=$site&action=tq&job_name=".$job_name;
+						  if ($lang) echo "&lang=$lang"; 
+						  if (isset($_GET['data']) and $_GET['data'] == 'TQ') echo "&data=TQ";
+						  if (isset($_GET['tq_pn']) and $_GET['tq_pn'] == 'yes') echo "&tq_pn=yes";
+						  echo "\">".$job_name."</a>";
+						  echo "</div>";
+					require "tq/showtq.php"; 
+			    } else
+				   {
+					
+						echo "<div class=\"top_link\">
+							  <a href=\"index.php?site=$site";
+							  if ($lang) echo "&lang=$lang"; 
+							  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=tq";
+							  if ($lang) echo "&lang=$lang"; 
+							  if (isset($_GET['data']) and $_GET['data'] == 'TQ') echo "&data=TQ";
+							  echo "\">Search</a>
+							  </div>";
+							  require "tq/search.php";
+					}
+					break;
+				case "genesis":
+				if ($t_code){
+					echo "<div class=\"top_link\">
+						  <a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=genesis";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Search</a> >> <a
+						  href=\"index.php?site=$site&action=genesis&job_name=".$t_code;
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">".$t_code."</a>
+						  </div>";
+					require "genesis/showgenesis.php";
+			   
+			    } else
+			   {
+				
+					echo "<div class=\"top_link\">
+						  <a href=\"index.php?site=$site";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=genesis";
+						  if ($lang) echo "&lang=$lang"; 
+						  echo "\">Genesis</a>
+						  </div>";
+						  require "genesis/index.php";
+				}
+				break;
+			case "buildability":
+				if ($part_number){
+					echo "<div class=\"top_link\">
+								  <a href=\"index.php?site=$site";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=buildability";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\" id='nav_b_dis_list'>Buildability Dispatch List</a>
+								   >>  <a href=\"index.php?site=$site&action=buildability&part_number=$part_number";
+								   if ($lang) echo "&lang=$lang"; 
+								   echo "\">$part_number</a>
+								  </div>";
+			
+				} else {
+					echo "<div class=\"top_link\">
+								  <a href=\"index.php?site=$site";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\">Home</a> >> <a href=\"index.php?site=$site&action=buildability";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\" id='nav_b_dis_list'>Buildability Dispatch List</a>
+								  </div>";
+				}
+				
+				require "buildability/index.php";
+
+				break;
+		   default:
+			    if ($search_area){
+					echo "<div class=\"top_link\">
+								  <a href=\"index.php?site=$site";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\">Home</a> >> <a href=\"index.php?site=$site&search_area=$search_area";
+								  if ($lang) echo "&lang=$lang"; 
+								  echo "\" id='nav_b_dis_list'>Global Search for ". ucwords($search_area)." Data</a></div>";
+					require "global_search.php";
+				} else require "home.php";
+				break;
+		}
+   ?>
+</div>
+
+<!--Footer Begin-->
+<div id="footer">
+   <div class="copyright">
+    <p>CopyRight &copy; 2010-2011 Viasystems Group Inc All Rights Reserved.</p>
+   </div>
+</div>
+<!--Footer End-->
+</body>
+</html>
